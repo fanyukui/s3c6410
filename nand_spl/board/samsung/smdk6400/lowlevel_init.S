@@ -1,0 +1,1 @@
+/home/fanyukui/kui/svn_database/u-boot-2010.09/board/samsung/smdk6400/lowlevel_init.S

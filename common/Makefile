@@ -48,6 +48,7 @@ COBJS-y += cmd_help.o
 COBJS-y += cmd_nvedit.o
 COBJS-y += cmd_version.o
 
+
 # environment
 COBJS-y += env_common.o
 COBJS-$(CONFIG_ENV_IS_IN_DATAFLASH) += env_dataflash.o
@@ -148,6 +149,7 @@ COBJS-$(CONFIG_CMD_UNIVERSE) += cmd_universe.o
 ifdef CONFIG_CMD_USB
 COBJS-y += cmd_usb.o
 COBJS-y += usb.o
+COBJS-y += cmd_usbd.o
 COBJS-$(CONFIG_USB_STORAGE) += usb_storage.o
 endif
 COBJS-$(CONFIG_CMD_XIMG) += cmd_ximg.o

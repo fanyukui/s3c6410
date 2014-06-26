@@ -103,6 +103,37 @@
  ***********************************************************/
 #include <config_cmd_default.h>
 
+
+/*ubi*/
+#define CONFIG_CMD_UBIFS
+#define CONFIG_CMD_UBI
+#define CONFIG_CMD_MTDPARTS
+#define CONFIG_MTD_PARTITIONS
+#define CONFIG_MTD_DEVICE
+#define CONFIG_RBTREE
+#define CONFIG_LZO
+#define MTDIDS_DEFAULT "nand0=nand0"
+
+#define MTDPARTS_DEFAULT	"mtdparts=nand0:512k(u-boot),"	\
+						"2048(kernel),"	\
+						"20m(rootfs),"		\
+						"40m(data)"
+
+/*usbd*/
+#define CONFIG_S3C_USBD
+#define USBD_DOWN_ADDR		0x50007fc0
+
+#if !defined(__ASSEMBLY__)
+extern unsigned UsbDownloadChecksumOK, UsbDownloadFileSize;
+extern int FriendlyARMGetDataFromUSB (unsigned max_len, unsigned char **data_ptr, unsigned *received_len);
+extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned offset, unsigned MaxNandSize);
+extern int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned offset, unsigned MaxNandSize, const char *Name);
+extern void FriendlyARMMenu(void);
+extern unsigned int FriendlyARMGetNandSizeInMB(void);
+
+#endif
+
+
 #define CONFIG_CMD_CACHE
 #define CONFIG_CMD_REGINFO
 #define CONFIG_CMD_LOADS
@@ -130,7 +161,7 @@
  * Miscellaneous configurable options
  */
 #define CONFIG_SYS_LONGHELP				/* undef to save memory	      */
-#define CONFIG_SYS_PROMPT		"SMDK6400 # "	/* Monitor Command Prompt     */
+#define CONFIG_SYS_PROMPT		"SMDK6410 # "	/* Monitor Command Prompt     */
 #define CONFIG_SYS_CBSIZE		256		/* Console I/O Buffer Size    */
 #define CONFIG_SYS_PBSIZE		384		/* Print Buffer Size          */
 #define CONFIG_SYS_MAXARGS		16		/* max number of command args */
@@ -244,7 +275,7 @@
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST	/* NUB start-addr     */
 
 #define CONFIG_SYS_NAND_U_BOOT_OFFS	(4 * 1024)	/* Offset to RAM U-Boot image */
-#define CONFIG_SYS_NAND_U_BOOT_SIZE	(252 * 1024)	/* Size of RAM U-Boot image   */
+#define CONFIG_SYS_NAND_U_BOOT_SIZE	(350 * 1024)	/* Size of RAM U-Boot image   */
 
 /* NAND chip page size		*/
 #define CONFIG_SYS_NAND_PAGE_SIZE	2048

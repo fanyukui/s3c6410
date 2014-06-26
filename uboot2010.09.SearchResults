@@ -1,0 +1,26 @@
+---- ecc.correct Matches (25 in 13 files) ----
+Atmel_nand.c (drivers\mtd\nand):	stat = chip->ecc.correct(mtd, p, oob, NULL);
+Atmel_nand.c (drivers\mtd\nand):	nand->ecc.correct = atmel_nand_correct;
+Atmel_nand.c (drivers\mtd\nand):			nand->ecc.correct = NULL;
+Bfin_nand.c (drivers\mtd\nand):		chip->ecc.correct   = bfin_nfc_correct_data;
+Davinci_nand.c (drivers\mtd\nand):	nand->ecc.correct  = nand_davinci_correct_data;
+Davinci_nand.c (drivers\mtd\nand):	nand->ecc.correct = nand_davinci_4bit_correct_data;
+Diskonchip.c (drivers\mtd\nand):	nand->ecc.correct	= doc200x_correct_data;
+Mxc_nand.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, oob, NULL);
+Mxc_nand.c (drivers\mtd\nand):	this->ecc.correct = mxc_nand_correct_data;
+Nand_base.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+Nand_base.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, &chip->buffers->ecccode[i], &chip->buffers->ecccalc[i]);
+Nand_base.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+Nand_base.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, &ecc_code[i], NULL);
+Nand_base.c (drivers\mtd\nand):		stat = chip->ecc.correct(mtd, p, oob, NULL);
+Nand_base.c (drivers\mtd\nand):		if (!chip->ecc.calculate || !chip->ecc.correct ||
+Nand_base.c (drivers\mtd\nand):		if ((!chip->ecc.calculate || !chip->ecc.correct ||
+Nand_base.c (drivers\mtd\nand):		chip->ecc.correct = nand_correct_data;
+Nand_boot.c (nand_spl):		stat = this->ecc.correct(mtd, p, &ecc_code[i], &ecc_calc[i]);
+Ndfc.c (drivers\mtd\nand):	nand->ecc.correct = nand_correct_data;
+Nomadik.c (drivers\mtd\nand):	chip->ecc.correct = nomadik_ecc_correct;
+Omap_gpmc.c (drivers\mtd\nand):	nand->ecc.correct = NULL;
+Omap_gpmc.c (drivers\mtd\nand):		nand->ecc.correct = omap_correct_data;
+S3c2410_nand.c (drivers\mtd\nand):	nand->ecc.correct = s3c2410_nand_correct_data;
+S3c64xx.c (drivers\mtd\nand):	nand->ecc.correct	= s3c_nand_correct_data;
+Spr_nand.c (drivers\mtd\nand):	nand->ecc.correct = nand_correct_data;
