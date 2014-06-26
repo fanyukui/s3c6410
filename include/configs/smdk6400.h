@@ -62,7 +62,7 @@
 /*
  * Architecture magic and machine type
  */
-#define MACH_TYPE		1270
+#define MACH_TYPE		2520
 
 #define CONFIG_DISPLAY_CPUINFO
 #define CONFIG_DISPLAY_BOARDINFO
@@ -115,19 +115,21 @@
 #define MTDIDS_DEFAULT "nand0=nand0"
 
 #define MTDPARTS_DEFAULT	"mtdparts=nand0:512k(u-boot),"	\
-						"2048(kernel),"	\
+						"2048k(kernel),"	\
 						"20m(rootfs),"		\
 						"40m(data)"
 
 /*usbd*/
 #define CONFIG_S3C_USBD
 #define USBD_DOWN_ADDR		0x50007fc0
+#define CFG_MAX_NAND_DEVICE CONFIG_SYS_MAX_NAND_DEVICE
+
 
 #if !defined(__ASSEMBLY__)
 extern unsigned UsbDownloadChecksumOK, UsbDownloadFileSize;
 extern int FriendlyARMGetDataFromUSB (unsigned max_len, unsigned char **data_ptr, unsigned *received_len);
-extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned offset, unsigned MaxNandSize);
-extern int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned offset, unsigned MaxNandSize, const char *Name);
+extern int FriendlyARMWriteNand(const unsigned char*data,  unsigned len,unsigned long offset, unsigned MaxNandSize);
+extern int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len,unsigned long offset, unsigned MaxNandSize, const char *Name);
 extern void FriendlyARMMenu(void);
 extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
@@ -248,12 +250,12 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 #ifdef CONFIG_ENABLE_MMU
 #define CONFIG_SYS_MAPPED_RAM_BASE	0xc0000000
-#define CONFIG_BOOTCOMMAND	"nand read 0xc0018000 0x60000 0x1c0000;" \
-				"bootm 0xc0018000"
+#define CONFIG_BOOTCOMMAND	"nand read 0x50000000 0x100000 0x300000;" \
+				"bootm 0x50000000"
 #else
 #define CONFIG_SYS_MAPPED_RAM_BASE	CONFIG_SYS_SDRAM_BASE
-#define CONFIG_BOOTCOMMAND	"nand read 0x50018000 0x60000 0x1c0000;" \
-				"bootm 0x50018000"
+#define CONFIG_BOOTCOMMAND	"nand read 0x50000000 0x100000 0x300000;" \
+				"bootm 0x50000000"
 #endif
 
 /* NAND U-Boot load and start address */
@@ -275,7 +277,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 #define CONFIG_SYS_NAND_U_BOOT_START	CONFIG_SYS_NAND_U_BOOT_DST	/* NUB start-addr     */
 
 #define CONFIG_SYS_NAND_U_BOOT_OFFS	(4 * 1024)	/* Offset to RAM U-Boot image */
-#define CONFIG_SYS_NAND_U_BOOT_SIZE	(350 * 1024)	/* Size of RAM U-Boot image   */
+#define CONFIG_SYS_NAND_U_BOOT_SIZE	(400 * 1024)	/* Size of RAM U-Boot image   */
 
 /* NAND chip page size		*/
 #define CONFIG_SYS_NAND_PAGE_SIZE	2048
@@ -321,7 +323,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS		"console=ttySAC,115200"
+#define CONFIG_BOOTARGS		"root=/dev/mtdblock2 console=ttySAC0,115200"
 
 #if !defined(CONFIG_ENABLE_MMU)
 #define CONFIG_CMD_USB			1

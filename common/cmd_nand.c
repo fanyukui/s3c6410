@@ -782,6 +782,63 @@ usage:
 	return nand_load_image(cmdtp, &nand_info[idx], offset, addr, argv[0]);
 }
 
+
+unsigned int FriendlyARMGetNandSizeInMB(void)
+{
+	nand_info_t *nand;
+	if (nand_curr_device < 0 || nand_curr_device >= CFG_MAX_NAND_DEVICE ||
+	    !nand_info[nand_curr_device].name) {
+		return 0;
+	}
+	nand = &nand_info[nand_curr_device];
+	return nand->size / 1024 / 1024;
+}
+
+int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned long offset)
+{
+	int ret;
+	nand_info_t *nand;
+	nand = &nand_info[nand_curr_device];
+
+	nand_read_options_t r_opts;
+	memset(&r_opts, 0, sizeof(r_opts));
+	r_opts.buffer = data_ptr;	/* memory block in which read image is written*/
+	r_opts.length = length;		/* number of bytes to read */
+	r_opts.offset = offset;		/* start address in NAND */
+	r_opts.quiet = 0;			/* don't display progress messages */
+	//r_opts.readoob = 0;			/* put oob data in image */
+	//ret = nand_read_opts(nand,&r_opts);
+    ret = nand_read_skip_bad(nand,offset,length,data_ptr);
+
+	return ret;
+}
+
+int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long offset, unsigned MaxNandSize)
+{
+	nand_info_t *nand;
+	int ret;
+
+	if (nand_curr_device < 0 || nand_curr_device >= CFG_MAX_NAND_DEVICE ||
+	    !nand_info[nand_curr_device].name) {
+		printf("\nno devices available\n");
+		return -1;
+	}
+	nand = &nand_info[nand_curr_device];
+
+    /*offset ¶ÔÆë*/
+    if(len % CONFIG_SYS_NAND_PAGE_SIZE){
+        len = (len / CONFIG_SYS_NAND_PAGE_SIZE  + 1) * CONFIG_SYS_NAND_PAGE_SIZE;
+    }
+    /*offset ¶ÔÆë*/
+
+    printf("offset:0x%x\n",offset);
+    nand_write_skip_bad(nand,offset,len,data);
+
+	return ret;
+}
+
+
+
 U_BOOT_CMD(nboot, 4, 1, do_nandboot,
 	"boot from NAND device",
 	"[partition] | [[[loadAddr] dev] offset]"

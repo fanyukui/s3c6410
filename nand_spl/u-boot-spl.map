@@ -9,7 +9,7 @@ Linker script and memory map
                 0x00000000                . = 0x0
                 0x00000000                . = ALIGN (0x4)
 
-.text           0x00000000      0xb50
+.text           0x00000000      0xb4c
  start.o(.text)
  .text          0x00000000       0xb0 start.o
                 0x00000040                _end_vect
@@ -21,83 +21,83 @@ Linker script and memory map
  .text          0x000000b0      0x124 cpu_init.o
                 0x000000b0                mem_ctrl_asm_init
  nand_boot.o(.text)
- .text          0x000001d4      0x354 nand_boot.o
+ .text          0x000001d4      0x350 nand_boot.o
                 0x00000490                nand_boot
  *(.text)
- .text          0x00000528      0x1b8 lowlevel_init.o
-                0x0000052c                lowlevel_init
- .text          0x000006e0      0x12c nand_ecc.o
-                0x000006e0                nand_correct_data
- .text          0x0000080c      0x344 s3c64xx.o
-                0x00000a5c                board_nand_init
+ .text          0x00000524      0x1b8 lowlevel_init.o
+                0x00000528                lowlevel_init
+ .text          0x000006dc      0x12c nand_ecc.o
+                0x000006dc                nand_correct_data
+ .text          0x00000808      0x344 s3c64xx.o
+                0x00000a58                board_nand_init
 
-.glue_7         0x00000b50        0x0
- .glue_7        0x00000b50        0x0 start.o
- .glue_7        0x00000b50        0x0 cpu_init.o
- .glue_7        0x00000b50        0x0 nand_boot.o
- .glue_7        0x00000b50        0x0 lowlevel_init.o
- .glue_7        0x00000b50        0x0 nand_ecc.o
- .glue_7        0x00000b50        0x0 s3c64xx.o
+.glue_7         0x00000b4c        0x0
+ .glue_7        0x00000b4c        0x0 start.o
+ .glue_7        0x00000b4c        0x0 cpu_init.o
+ .glue_7        0x00000b4c        0x0 nand_boot.o
+ .glue_7        0x00000b4c        0x0 lowlevel_init.o
+ .glue_7        0x00000b4c        0x0 nand_ecc.o
+ .glue_7        0x00000b4c        0x0 s3c64xx.o
 
-.glue_7t        0x00000b50        0x0
- .glue_7t       0x00000b50        0x0 start.o
- .glue_7t       0x00000b50        0x0 cpu_init.o
- .glue_7t       0x00000b50        0x0 nand_boot.o
- .glue_7t       0x00000b50        0x0 lowlevel_init.o
- .glue_7t       0x00000b50        0x0 nand_ecc.o
- .glue_7t       0x00000b50        0x0 s3c64xx.o
+.glue_7t        0x00000b4c        0x0
+ .glue_7t       0x00000b4c        0x0 start.o
+ .glue_7t       0x00000b4c        0x0 cpu_init.o
+ .glue_7t       0x00000b4c        0x0 nand_boot.o
+ .glue_7t       0x00000b4c        0x0 lowlevel_init.o
+ .glue_7t       0x00000b4c        0x0 nand_ecc.o
+ .glue_7t       0x00000b4c        0x0 s3c64xx.o
 
-.vfp11_veneer   0x00000b50        0x0
- .vfp11_veneer  0x00000b50        0x0 start.o
- .vfp11_veneer  0x00000b50        0x0 cpu_init.o
- .vfp11_veneer  0x00000b50        0x0 nand_boot.o
- .vfp11_veneer  0x00000b50        0x0 lowlevel_init.o
- .vfp11_veneer  0x00000b50        0x0 nand_ecc.o
- .vfp11_veneer  0x00000b50        0x0 s3c64xx.o
+.vfp11_veneer   0x00000b4c        0x0
+ .vfp11_veneer  0x00000b4c        0x0 start.o
+ .vfp11_veneer  0x00000b4c        0x0 cpu_init.o
+ .vfp11_veneer  0x00000b4c        0x0 nand_boot.o
+ .vfp11_veneer  0x00000b4c        0x0 lowlevel_init.o
+ .vfp11_veneer  0x00000b4c        0x0 nand_ecc.o
+ .vfp11_veneer  0x00000b4c        0x0 s3c64xx.o
 
-.v4_bx          0x00000b50        0x0
- .v4_bx         0x00000b50        0x0 start.o
- .v4_bx         0x00000b50        0x0 cpu_init.o
- .v4_bx         0x00000b50        0x0 nand_boot.o
- .v4_bx         0x00000b50        0x0 lowlevel_init.o
- .v4_bx         0x00000b50        0x0 nand_ecc.o
- .v4_bx         0x00000b50        0x0 s3c64xx.o
-                0x00000b50                . = ALIGN (0x4)
+.v4_bx          0x00000b4c        0x0
+ .v4_bx         0x00000b4c        0x0 start.o
+ .v4_bx         0x00000b4c        0x0 cpu_init.o
+ .v4_bx         0x00000b4c        0x0 nand_boot.o
+ .v4_bx         0x00000b4c        0x0 lowlevel_init.o
+ .v4_bx         0x00000b4c        0x0 nand_ecc.o
+ .v4_bx         0x00000b4c        0x0 s3c64xx.o
+                0x00000b4c                . = ALIGN (0x4)
 
 .rodata
  *(SORT(.rodata*))
-                0x00000b50                . = ALIGN (0x4)
+                0x00000b4c                . = ALIGN (0x4)
 
-.data           0x00000b50        0x8
+.data           0x00000b4c        0x8
  *(.data)
- .data          0x00000b50        0x0 start.o
- .data          0x00000b50        0x0 cpu_init.o
- .data          0x00000b50        0x0 nand_boot.o
- .data          0x00000b50        0x0 lowlevel_init.o
- .data          0x00000b50        0x0 nand_ecc.o
- .data          0x00000b50        0x8 s3c64xx.o
-                0x00000b58                . = ALIGN (0x4)
+ .data          0x00000b4c        0x0 start.o
+ .data          0x00000b4c        0x0 cpu_init.o
+ .data          0x00000b4c        0x0 nand_boot.o
+ .data          0x00000b4c        0x0 lowlevel_init.o
+ .data          0x00000b4c        0x0 nand_ecc.o
+ .data          0x00000b4c        0x8 s3c64xx.o
+                0x00000b54                . = ALIGN (0x4)
 
 .got
  *(.got)
-                0x00000b58                __u_boot_cmd_start = .
+                0x00000b54                __u_boot_cmd_start = .
 
 .u_boot_cmd
  *(.u_boot_cmd)
-                0x00000b58                __u_boot_cmd_end = .
-                0x00000b58                . = ALIGN (0x4)
-                0x00000b58                __bss_start = .
+                0x00000b54                __u_boot_cmd_end = .
+                0x00000b54                . = ALIGN (0x4)
+                0x00000b54                __bss_start = .
 
-.bss            0x00000b58        0x4
+.bss            0x00000b54        0x4
  *(.bss)
- .bss           0x00000b58        0x0 start.o
- .bss           0x00000b58        0x0 cpu_init.o
- .bss           0x00000b58        0x0 nand_boot.o
- .bss           0x00000b58        0x0 lowlevel_init.o
- .bss           0x00000b58        0x0 nand_ecc.o
- .bss           0x00000b58        0x4 s3c64xx.o
-                0x00000b5c                . = ALIGN (0x4)
-                0x00000b5c                _end = .
+ .bss           0x00000b54        0x0 start.o
+ .bss           0x00000b54        0x0 cpu_init.o
+ .bss           0x00000b54        0x0 nand_boot.o
+ .bss           0x00000b54        0x0 lowlevel_init.o
+ .bss           0x00000b54        0x0 nand_ecc.o
+ .bss           0x00000b54        0x4 s3c64xx.o
+                0x00000b58                . = ALIGN (0x4)
+                0x00000b58                _end = .
 Address of section .text set to 0x0
 LOAD start.o
 LOAD cpu_init.o

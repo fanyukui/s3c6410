@@ -40,6 +40,23 @@
 
 #include <post.h>
 
+
+#define MEMDOWNLOADADDR		0x50100000
+#define NANDUBOOTIMAGEADDR	0x100000
+#define NANDFSIMAGEADDR		0x500000
+#define MAXUBOOTKERNELIMAGE	0x300000
+#define MAXFSIMAGESIZE		0x2000000
+#define MEMUBOOTADDR	MEMDOWNLOADADDR + 0x100000
+#define MEMKERNELADDR	MEMUBOOTADDR + 0x100000
+#define MEMFSADDR		MEMKERNELADDR + 0x200000
+#define UBOOTSIZE		0x3cad4
+#define KERNELSIZE		0x19f840
+#define FSSIZE			0x1b5c400
+#define UBOOTOFFSET		0x0
+#define KERNELOFFSET	0x100000
+#define FSOFFSET		0x600000
+
+
 #if defined(CONFIG_SILENT_CONSOLE) || defined(CONFIG_POST) || defined(CONFIG_CMDLINE_EDITING)
 DECLARE_GLOBAL_DATA_PTR;
 #endif
@@ -432,6 +449,9 @@ void main_loop (void)
 	/*
 	 * Main Loop for Monitor Command Processing
 	 */
+	 FriendlyARMMenu();
+
+
 #ifdef CONFIG_SYS_HUSH_PARSER
 	parse_file_outer();
 	/* This point is never reached */
@@ -1438,3 +1458,233 @@ int do_run (cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 	return 0;
 }
 #endif
+
+#define K *1024
+#define M K K
+
+static void ExecuteCmd(char *cmd)
+{
+	parse_string_outer(cmd, FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP);
+}
+
+void FriendlyARMMenu(void)
+{
+#ifdef AUTOUBOOT
+	int ret;
+	printf("installing system. please waite...\n");
+	ret = szhc_nandtonand(0);
+	if(ret < 0)
+		printf("\n\n**error ,reinstall please.**\n\n\n");
+	else
+	{
+		ExecuteCmd("setenv bootcmd nand read 0x50007fc0 0x100000 0x200000\\;bootm 0x50007fc0");
+		ExecuteCmd("setenv bootargs root=/dev/mtdblock2 console=tty0");
+		ExecuteCmd("saveenv");
+		printf("success. restart the system now...\n");
+		ExecuteCmd("reset");
+	}
+#else
+	while(1) {
+		int c;
+		//printf("##### FriendlyARM U-Boot(" RELEASE_MARK ", " BOOT_MEDIA ") for 6410 #####\n");
+		printf("[t] Allocate console to this terminal and Boot\n");
+		printf("[l] Allocate console to LCD displayer and Boot\n");
+		printf("[p] Print environment variable information\n");
+		printf("[f] Format the nand flash\n");
+		printf("[v] Download u-boot.bin\n");
+		printf("[k] Download Linux/Android kernel\n");
+		printf("[y] Download root yaffs2 image\n");
+		//printf("[a] Download Absolute User Application\n");
+		//printf("[n] Download Nboot.nb0 for WinCE\n");
+		//printf("[w] Download WinCE NK.nb0\n");
+		//printf("[s] Set the boot parameter of Linux\n");
+		printf("[b] Boot Linux\n");
+		printf("[q] Quit to shell\n");
+		//printf("NAND: %u MiB, RAM: %u MiB\n", FriendlyARMGetNandSizeInMB(), PHYS_SDRAM_1_SIZE >> 20);
+		// if (Lcd != 0) {
+			// printf("LCD type, firmware version: %u %u\n", Lcd, FirmwareVer);
+		// }
+		printf("Enter your Selection:");
+
+		c = getc();
+		printf("%c\n", c >= ' ' && c <= 127 ? c : ' ');
+
+		switch(c)
+		{
+		case 'T': case 't':
+			ExecuteCmd("setenv bootargs root=/dev/mtdblock2 console=tty0 console=ttySAC0,115200");
+			ExecuteCmd("saveenv");
+			ExecuteCmd("boot");
+			break;
+
+		case 'L': case 'l':
+			ExecuteCmd("setenv bootargs root=/dev/mtdblock2 console=tty0");
+			ExecuteCmd("saveenv");
+			ExecuteCmd("boot");
+			break;
+
+		case 'P': case 'p':
+			printf("\n\n**************************System environment:**************************\n");
+			ExecuteCmd("printenv");
+			printf("\n***********************************************************************\n");
+			break;
+
+		case 'F': case 'f':
+			ExecuteCmd("nand scrub");
+			break;
+
+		case 'V': case 'v':
+			FriendlyARMGetDataFromUsbAndWriteNand(512 K, 0, 512 K, "U-Boot.bin");
+			break;
+
+		case 'K': case 'k':
+			FriendlyARMGetDataFromUsbAndWriteNand(2 M, 1 M, 2 M, "Linux/Android Kernel");
+			//FriendlyARMGetDataFromUsbAndWriteNand(5 M - 128 K, 4 * 128 K, 5 M, "Linux/Android Kernel");
+			break;
+
+		case 'Y': case 'y':
+			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 6 M ,(unsigned)-1, "yaffs2-image");
+			//FriendlyARMGetDataFromUsbAndWriteNand(126 M, 5 M + 4 * 128 K, (unsigned)-1, "yaffs2-image");
+			break;
+
+		//case 'A': case 'a':
+		//	FriendlyARMGetDataFromUsbAndWriteNand(64 M, 0, 128 M, "User-Bin");
+		//	break;
+
+		//case 'N': case 'n':
+		//	FriendlyARMGetDataFromUsbAndWriteNand(128 K, 0, 128 K, "nboot.nb0");
+		//	break;
+
+		//case 'W': case 'w':
+		//	ExecuteCmd("nand erase 4280000");
+		//	FriendlyARMGetDataFromUsbAndWriteNand(63 M, 2 M + 4 * 128 K, 64 M, "NK.nb0");
+		//	// Mark the indicators of NK Magic Number and Image Size
+		//	{
+		//		unsigned char *p = (unsigned char *)0xC0000000;
+		//		memset(p, 0, 128 K);
+		//		((unsigned *)p)[0] = 0xCEFA4146U;
+		//		((unsigned *)p)[1] = 63 M;
+		//		FriendlyARMWriteNand(p, 128 K, 2 * 128 K, 128 K);
+		//	}
+		//	break;
+
+		//case 'S': case 's':
+		//	{
+		//		int r;
+		//		char buf[1024 + 1] = "setenv bootargs ";
+		//		r = readline("Linux cmd line: ");
+		//		if (r > 0 && r < sizeof buf - 16 - 1) {
+		//			strcat(buf, console_buffer);
+		//			ExecuteCmd(buf);
+		//			ExecuteCmd("saveenv");
+		//			printf("Linux command line saved\n");
+		//		} else {
+		//			printf("Linux command line not changed\n");
+		//		}
+		//	}
+		//	break;
+		case 'B': case 'b':
+			//ExecuteCmd(CONFIG_BOOTCOMMAND);
+			ExecuteCmd("boot");
+			while(1);
+		case 'Q': case 'q':
+			return;
+		default:
+			;
+		}
+	}
+#endif
+}
+
+#undef K
+#undef M
+
+extern int FriendlyARMGetDataFromUSB (unsigned max_len, unsigned char **data_ptr, unsigned *received_len);
+extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned long offset, unsigned MaxNandSize);
+extern int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned long offset);
+int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset, unsigned MaxNandSize, const char *Name)
+{
+	int ret;
+	unsigned char *RevPtr;
+	unsigned RevLen;
+	printf("Downloading %s from USB...\n", Name);
+	ret = FriendlyARMGetDataFromUSB(max_len, &RevPtr, &RevLen);
+	printf("Downloading %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+	if (ret < 0) {
+		return ret;
+	}
+	printf("Writing %s into NAND...\n", Name);
+	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, MaxNandSize);
+	printf("Writing %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+
+	return ret;
+}
+
+int szhc_nandtonand(int readonly)
+{
+	/* read all of uboot kernel and FS to memory */
+	int ret;
+	unsigned long RevLen,offset;
+	unsigned char *RevPtr = MEMUBOOTADDR;
+	RevLen = MAXUBOOTKERNELIMAGE;
+	offset = NANDUBOOTIMAGEADDR;
+	printf("Downloading uboot and kernel from Nand...\n");
+	ret = FriendlyARMReadNand(RevPtr,RevLen,offset);
+	printf("Downloading uboot and kernel %s\n", ret >= 0 ? "successed" : "failed");
+	if(ret < 0)
+		return ret;
+	RevPtr = MEMFSADDR;
+	RevLen = MAXFSIMAGESIZE;
+	offset = NANDFSIMAGEADDR;
+	printf("Downloading FS from Nand...\n");
+	ret = FriendlyARMReadNand(RevPtr,RevLen,offset);
+	printf("Downloading FS %s\n", ret >= 0 ? "successed" : "failed");
+	if(ret < 0)
+	{
+		return ret;
+	}else
+	{
+		if(readonly == 1)
+			return 0;
+	}
+
+	/*erase whole nand flash!*/
+	printf("erase whole nand flash!\n");
+	ExecuteCmd("nand erase");
+
+	/*write all of uboot kernel and FS to nand flash*/
+	RevPtr = MEMUBOOTADDR;
+	RevLen = UBOOTSIZE;
+	offset = UBOOTOFFSET;
+	printf("Writing uboot into NAND...\n");
+	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, 0x100000);
+	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+	printf("Writing uboot %s\n", ret >= 0 ? "successed" : "failed");
+	if(ret < 0)
+		return ret;
+
+	RevPtr = MEMKERNELADDR;
+	RevLen = KERNELSIZE;
+	offset = KERNELOFFSET;
+	printf("Writing kernel into NAND...\n");
+	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, 0x200000);
+	printf("Writing kernel %s\n", ret >= 0 ? "successed" : "failed");
+	if(ret < 0)
+		return ret;
+
+	RevPtr = MEMFSADDR;
+	RevLen = FSSIZE;
+	offset = FSOFFSET;
+	printf("Writing FS into NAND...\n");
+	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, (unsigned)-1);
+	printf("Writing FS %s\n", ret >= 0 ? "successed" : "failed");
+
+	return ret;
+}
+
+
+

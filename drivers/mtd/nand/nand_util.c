@@ -455,6 +455,7 @@ static size_t get_len_incl_bad (nand_info_t *nand, loff_t offset,
 	return len_incl_bad;
 }
 
+
 /**
  * nand_write_skip_bad:
  *
