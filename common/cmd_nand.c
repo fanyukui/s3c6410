@@ -816,7 +816,7 @@ int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned 
 int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long offset, unsigned MaxNandSize)
 {
 	nand_info_t *nand;
-	int ret;
+	int ret,length;
 
 	if (nand_curr_device < 0 || nand_curr_device >= CFG_MAX_NAND_DEVICE ||
 	    !nand_info[nand_curr_device].name) {
@@ -827,10 +827,18 @@ int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long 
 
     /*len 对齐*/
     if(len % CONFIG_SYS_NAND_PAGE_SIZE){
-        len = (len / CONFIG_SYS_NAND_PAGE_SIZE  + 1) * CONFIG_SYS_NAND_PAGE_SIZE;
+        length = (len / CONFIG_SYS_NAND_PAGE_SIZE  + 1) * CONFIG_SYS_NAND_PAGE_SIZE;
     }
-    /*offset 对齐*/
-    ret = nand_write_skip_bad(nand,offset,&len,data);
+    /*擦除分区*/
+    nand_erase_options_t opts;
+	opts.length = (len / CONFIG_SYS_NAND_BLOCK_SIZE + 1) * CONFIG_SYS_NAND_BLOCK_SIZE;
+	opts.quiet = 0;
+	opts.jffs2 = 0;
+	opts.scrub = 0;
+    opts.offset = offset;
+    nand_erase_opts(nand, &opts);
+    /*调用写函数*/
+    ret = nand_write_skip_bad(nand,offset,&length,data);
 
 	return ret;
 }

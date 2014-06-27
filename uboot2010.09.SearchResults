@@ -1,9 +1,10 @@
----- FriendlyARMWriteNand Matches (8 in 3 files) ----
-Cmd_nand.c (common):int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long offset, unsigned MaxNandSize)
-Main.c (common):		//		FriendlyARMWriteNand(p, 128 K, 2 * 128 K, 128 K);
-Main.c (common):extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned offset, unsigned MaxNandSize);
-Main.c (common):	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, MaxNandSize);
-Main.c (common):	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, 0x100000);
-Main.c (common):	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, 0x200000);
-Main.c (common):	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, (unsigned)-1);
-Smdk6400.h (include\configs):extern int FriendlyARMWriteNand(const unsigned char*data,  unsigned len,unsigned long offset, unsigned MaxNandSize);
+---- block_bad Matches (9 in 4 files) ----
+Diskonchip.c (drivers\mtd\nand):	nand->block_bad		= doc200x_block_bad;
+Nand.h (include\linux\mtd): * @block_bad:		[REPLACEABLE] check, if the block is bad
+Nand.h (include\linux\mtd):	int		(*block_bad)(struct mtd_info *mtd, loff_t ofs, int getchip);
+Nand_base.c (drivers\mtd\nand):		return chip->block_bad(mtd, ofs, getchip);
+Nand_base.c (drivers\mtd\nand):	if (!chip->block_bad)
+Nand_base.c (drivers\mtd\nand):		chip->block_bad = nand_block_bad;
+Nand_util.c (drivers\mtd\nand):		nand_block_bad_old = priv_nand->block_bad;
+Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_scrub;
+Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_old;

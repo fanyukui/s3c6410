@@ -325,7 +325,9 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS		"console=ttySAC0,115200 rootfstype=ubifs root=ubi0:rootfs-nand"
+#define CONFIG_BOOTARGS	"ubi.mtd=2 root=ubi0:rootfs-nand rootfstype=ubifs console=ttySAC0,115200"
+/*≈‰÷√mtdµ˜ ‘*/
+//#define CONFIG_MTD_DEBUG
 
 #if !defined(CONFIG_ENABLE_MMU)
 #define CONFIG_CMD_USB			1

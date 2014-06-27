@@ -1493,7 +1493,7 @@ void FriendlyARMMenu(void)
 		printf("[f] Format the nand flash\n");
 		printf("[v] Download u-boot.bin\n");
 		printf("[k] Download Linux/Android kernel\n");
-		printf("[y] Download root yaffs2 image\n");
+		printf("[y] Download root ubi image\n");
 		//printf("[a] Download Absolute User Application\n");
 		//printf("[n] Download Nboot.nb0 for WinCE\n");
 		//printf("[w] Download WinCE NK.nb0\n");
@@ -1534,7 +1534,7 @@ void FriendlyARMMenu(void)
 			break;
 
 		case 'V': case 'v':
-			FriendlyARMGetDataFromUsbAndWriteNand(512 K, 0, 512 K, "U-Boot.bin");
+			FriendlyARMGetDataFromUsbAndWriteNand(1 M, 0, 1 M, "U-Boot.bin");
 			break;
 
 		case 'K': case 'k':
@@ -1543,7 +1543,7 @@ void FriendlyARMMenu(void)
 			break;
 
 		case 'Y': case 'y':
-			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 6 M ,(unsigned)-1, "yaffs2-image");
+			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 6 M ,(unsigned)-1, "ubi-image");
 			//FriendlyARMGetDataFromUsbAndWriteNand(126 M, 5 M + 4 * 128 K, (unsigned)-1, "yaffs2-image");
 			break;
 
@@ -1604,21 +1604,51 @@ extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned
 extern int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned long offset);
 int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset, unsigned MaxNandSize, const char *Name)
 {
-	int ret;
-	unsigned char *RevPtr;
-	unsigned RevLen;
-	printf("Downloading %s from USB...\n", Name);
-	ret = FriendlyARMGetDataFromUSB(max_len, &RevPtr, &RevLen);
-	printf("Downloading %s %s\n", Name, ret >= 0 ? "successed" : "failed");
-	if (ret < 0) {
-		return ret;
-	}
-	printf("Writing %s into NAND...\n", Name);
-	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
-	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, MaxNandSize);
-	printf("Writing %s %s\n", Name, ret >= 0 ? "successed" : "failed");
 
-	return ret;
+    if(-1 == MaxNandSize){
+        int ret;
+    	unsigned char *RevPtr;
+    	unsigned RevLen;
+    	printf("Downloading %s from USB...\n", Name);
+    	ret = FriendlyARMGetDataFromUSB(max_len, &RevPtr, &RevLen);
+    	printf("Downloading %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+       	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+
+    	if (ret < 0) {
+    		return ret;
+    	}
+        /*¸ñÊ½»¯ubi*/
+   	    ExecuteCmd("mtdpart default");
+	    ExecuteCmd("nand erase rootfs");
+	    ExecuteCmd("ubi part rootfs");
+	    ExecuteCmd("ubi create rootfs-nand");
+   	    ExecuteCmd("saveenv");
+
+        /*ÉÕÐ´ubi*/
+        char format[50] = {0};
+//        memset(format,50,0);
+        sprintf(format,"ubi write %x rootfs-nand  %x",RevPtr,RevLen);
+        printf("%s\n",format);
+  	    ExecuteCmd(format);
+    }
+    else{
+    	int ret;
+    	unsigned char *RevPtr;
+    	unsigned RevLen;
+    	printf("Downloading %s from USB...\n", Name);
+    	ret = FriendlyARMGetDataFromUSB(max_len, &RevPtr, &RevLen);
+    	printf("Downloading %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+    	if (ret < 0) {
+    		return ret;
+    	}
+    	printf("Writing %s into NAND...\n", Name);
+    	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
+    	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, MaxNandSize);
+    	printf("Writing %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+    	return ret;
+
+    }
+
 }
 
 int szhc_nandtonand(int readonly)
