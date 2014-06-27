@@ -825,14 +825,12 @@ int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long 
 	}
 	nand = &nand_info[nand_curr_device];
 
-    /*offset ¶ÔÆë*/
+    /*len ¶ÔÆë*/
     if(len % CONFIG_SYS_NAND_PAGE_SIZE){
         len = (len / CONFIG_SYS_NAND_PAGE_SIZE  + 1) * CONFIG_SYS_NAND_PAGE_SIZE;
     }
     /*offset ¶ÔÆë*/
-
-    printf("offset:0x%x\n",offset);
-    nand_write_skip_bad(nand,offset,len,data);
+    ret = nand_write_skip_bad(nand,offset,&len,data);
 
 	return ret;
 }

@@ -114,11 +114,11 @@
 #define CONFIG_LZO
 #define MTDIDS_DEFAULT "nand0=nand0"
 
-#define MTDPARTS_DEFAULT	"mtdparts=nand0:512k(u-boot),"	\
-						"2048k(kernel),"	\
-						"20m(rootfs),"		\
-						"40m(data)"
-
+#define MTDPARTS_DEFAULT	"mtdparts=nand0:1m(u-boot),"	\
+    						"5m(kernel),"	\
+	    					"40m(rootfs),"		\
+		    				"40m(data)," \
+                            "-(reserved)"
 /*usbd*/
 #define CONFIG_S3C_USBD
 #define USBD_DOWN_ADDR		0x50007fc0
@@ -232,7 +232,6 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 #define CONFIG_SYS_FLASH_ERASE_TOUT	(5 * CONFIG_SYS_HZ) /* Timeout for Flash Erase	*/
 #define CONFIG_SYS_FLASH_WRITE_TOUT	(5 * CONFIG_SYS_HZ) /* Timeout for Flash Write	*/
 
-#define CONFIG_ENV_SIZE		0x4000	/* Total Size of Environment Sector */
 
 /*
  * SMDK6400 board specific data
@@ -261,7 +260,10 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 /* NAND U-Boot load and start address */
 #define CONFIG_SYS_UBOOT_BASE		(CONFIG_SYS_MAPPED_RAM_BASE + 0x07e00000)
 
-#define CONFIG_ENV_OFFSET		0x0040000
+
+/*环境变量配置512K*/
+#define CONFIG_ENV_OFFSET		0x0080000
+#define CONFIG_ENV_SIZE		0x80000	/* Total Size of Environment Sector */
 
 /* NAND configuration */
 #define CONFIG_SYS_MAX_NAND_DEVICE	1
@@ -323,7 +325,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS		"root=/dev/mtdblock2 console=ttySAC0,115200"
+#define CONFIG_BOOTARGS		"console=ttySAC0,115200 rootfstype=ubifs root=ubi0:rootfs-nand"
 
 #if !defined(CONFIG_ENABLE_MMU)
 #define CONFIG_CMD_USB			1

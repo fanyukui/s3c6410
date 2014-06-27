@@ -1538,7 +1538,7 @@ void FriendlyARMMenu(void)
 			break;
 
 		case 'K': case 'k':
-			FriendlyARMGetDataFromUsbAndWriteNand(2 M, 1 M, 2 M, "Linux/Android Kernel");
+			FriendlyARMGetDataFromUsbAndWriteNand(3 M, 1 M, 3 M, "Linux/Android Kernel");
 			//FriendlyARMGetDataFromUsbAndWriteNand(5 M - 128 K, 4 * 128 K, 5 M, "Linux/Android Kernel");
 			break;
 
