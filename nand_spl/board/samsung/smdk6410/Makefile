@@ -35,7 +35,7 @@ AFLAGS	+= -DCONFIG_NAND_SPL
 CFLAGS	+= -DCONFIG_NAND_SPL
 
 SOBJS	= start.o cpu_init.o lowlevel_init.o
-COBJS	= nand_boot.o nand_ecc.o s3c64xx.o
+COBJS	= nand_boot.o nand_ecc.o s3c64xx.o  movi.o  
 
 SRCS	:= $(addprefix $(obj),$(SOBJS:.o=.S) $(COBJS:.o=.c))
 OBJS	:= $(addprefix $(obj),$(SOBJS) $(COBJS))
@@ -44,7 +44,7 @@ LNDIR	:= $(OBJTREE)/nand_spl/board/$(BOARDDIR)
 
 nandobj	:= $(OBJTREE)/nand_spl/
 
-ALL	= $(nandobj)u-boot-spl $(nandobj)u-boot-spl.bin $(nandobj)u-boot-spl-16k.bin
+ALL	= $(nandobj)u-boot-spl $(nandobj)u-boot-spl.bin $(nandobj)u-boot-spl-16k.bin 
 
 all:	$(obj).depend $(ALL)
 

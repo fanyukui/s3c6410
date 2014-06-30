@@ -1,10 +1,2 @@
----- block_bad Matches (9 in 4 files) ----
-Diskonchip.c (drivers\mtd\nand):	nand->block_bad		= doc200x_block_bad;
-Nand.h (include\linux\mtd): * @block_bad:		[REPLACEABLE] check, if the block is bad
-Nand.h (include\linux\mtd):	int		(*block_bad)(struct mtd_info *mtd, loff_t ofs, int getchip);
-Nand_base.c (drivers\mtd\nand):		return chip->block_bad(mtd, ofs, getchip);
-Nand_base.c (drivers\mtd\nand):	if (!chip->block_bad)
-Nand_base.c (drivers\mtd\nand):		chip->block_bad = nand_block_bad;
-Nand_util.c (drivers\mtd\nand):		nand_block_bad_old = priv_nand->block_bad;
-Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_scrub;
-Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_old;
+---- movi.h Matches (1 in 1 files) ----
+Movi.c (arch\arm\cpu\arm1176):#include <movi.h>

@@ -36,9 +36,9 @@
  * High Level Configuration Options
  * (easy to change)
  */
-#define CONFIG_S3C6400		1	/* in a SAMSUNG S3C6400 SoC     */
+#define CONFIG_S3C6410		1	/* in a SAMSUNG S3C6400 SoC     */
 #define CONFIG_S3C64XX		1	/* in a SAMSUNG S3C64XX Family  */
-#define CONFIG_SMDK6400		1	/* on a SAMSUNG SMDK6400 Board  */
+#define CONFIG_SMDK6410		1	/* on a SAMSUNG SMDK6400 Board  */
 
 #define CONFIG_SKIP_RELOCATE_UBOOT
 
@@ -309,12 +309,14 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Boot configuration (define only one of next 3) */
 #define CONFIG_BOOT_NAND
+//#define CONFIG_BOOT_MOVINAND
 /* None of these are currently implemented. Left from the original Samsung
  * version for reference
 #define CONFIG_BOOT_NOR
 #define CONFIG_BOOT_MOVINAND
 #define CONFIG_BOOT_ONENAND
 */
+
 
 #define CONFIG_NAND
 #define CONFIG_NAND_S3C64XX

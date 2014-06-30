@@ -289,15 +289,26 @@ clbss_l:
 	cmp	r0, r1
 	ble	clbss_l
 
-#ifndef CONFIG_NAND_SPL
-	ldr	pc, _start_armboot
 
+
+
+#ifdef CONFIG_BOOT_NOR
 _start_armboot:
 	.word start_armboot
+	ldr	pc, _start_armboot
 #else
+#ifdef CONFIG_BOOT_NAND
 	b	nand_boot
 /*	.word nand_boot*/
+#else
+#ifdef CONFIG_BOOT_MOVINAND
+	b	movi_bl2_copy
+	/*dr	pc, _start_armboot*/
 #endif
+#endif
+#endif
+
+
 
 #ifdef CONFIG_ENABLE_MMU
 _mmu_table_base:

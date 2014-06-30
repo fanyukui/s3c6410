@@ -33,11 +33,10 @@ SECTIONS
 
 	. = ALIGN(4);
 	.text      :
-	{
+	{ 
 	  start.o	(.text)
 	  cpu_init.o	(.text)
 	  nand_boot.o	(.text)
-
 	  *(.text)
 	}
 
