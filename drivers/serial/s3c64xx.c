@@ -68,6 +68,7 @@ static const int udivslot[] = {
 
 void serial_setbrg(void)
 {
+
 	DECLARE_GLOBAL_DATA_PTR;
 	s3c64xx_uart *const uart = s3c64xx_get_base_uart(UART_NR);
 	u32 pclk = get_PCLK();
@@ -81,6 +82,7 @@ void serial_setbrg(void)
 
 	for (i = 0; i < 100; i++)
 		barrier();
+
 }
 
 /*

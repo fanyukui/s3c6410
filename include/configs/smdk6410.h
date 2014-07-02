@@ -36,9 +36,9 @@
  * High Level Configuration Options
  * (easy to change)
  */
-#define CONFIG_S3C6400		1	/* in a SAMSUNG S3C6400 SoC     */
+#define CONFIG_S3C6410		1	/* in a SAMSUNG S3C6400 SoC     */
 #define CONFIG_S3C64XX		1	/* in a SAMSUNG S3C64XX Family  */
-#define CONFIG_SMDK6400		1	/* on a SAMSUNG SMDK6400 Board  */
+#define CONFIG_SMDK6410		1	/* on a SAMSUNG SMDK6400 Board  */
 
 #define CONFIG_SKIP_RELOCATE_UBOOT
 
@@ -81,6 +81,13 @@
 #define CONFIG_CS8900_BASE	  	0x18800300
 #define CONFIG_CS8900_BUS16		/* follow the Linux driver	*/
 
+
+/*Uart*/
+#define CONFIG_CLKSRC_CLKUART
+#define CONFIG_UART_66	/* default clock value of CLK_UART */
+#define CONFIG_SYNC_MODE
+//#define UART_CLK_CFG
+
 /*
  * select serial console configuration
  */
@@ -104,6 +111,7 @@
 #include <config_cmd_default.h>
 
 
+#ifdef CONFIG_UBI_FIFESYSTEM
 /*ubi*/
 #define CONFIG_CMD_UBIFS
 #define CONFIG_CMD_UBI
@@ -119,6 +127,8 @@
 	    					"40m(rootfs),"		\
 		    				"40m(data)," \
                             "-(reserved)"
+#endif
+
 /*usbd*/
 #define CONFIG_S3C_USBD
 #define USBD_DOWN_ADDR		0x50007fc0
@@ -309,6 +319,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Boot configuration (define only one of next 3) */
 #define CONFIG_BOOT_NAND
+//#define CONFIG_BOOT_MOVINAND
 /* None of these are currently implemented. Left from the original Samsung
  * version for reference
 #define CONFIG_BOOT_NOR

@@ -1,10 +1,326 @@
----- block_bad Matches (9 in 4 files) ----
-Diskonchip.c (drivers\mtd\nand):	nand->block_bad		= doc200x_block_bad;
-Nand.h (include\linux\mtd): * @block_bad:		[REPLACEABLE] check, if the block is bad
-Nand.h (include\linux\mtd):	int		(*block_bad)(struct mtd_info *mtd, loff_t ofs, int getchip);
-Nand_base.c (drivers\mtd\nand):		return chip->block_bad(mtd, ofs, getchip);
-Nand_base.c (drivers\mtd\nand):	if (!chip->block_bad)
-Nand_base.c (drivers\mtd\nand):		chip->block_bad = nand_block_bad;
-Nand_util.c (drivers\mtd\nand):		nand_block_bad_old = priv_nand->block_bad;
-Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_scrub;
-Nand_util.c (drivers\mtd\nand):		priv_nand->block_bad = nand_block_bad_old;
+---- volatile Matches (325 in 46 files) ----
+20001122-1.c (post\lib_powerpc\fpu):	volatile double a, *p;
+20001122-1.c (post\lib_powerpc\fpu):	volatile double b;
+20010114-2.c (post\lib_powerpc\fpu):	volatile float TWO23 = 8388608.0;
+20010226-1.c (post\lib_powerpc\fpu):	volatile long double dfrom = 1.1;
+20010226-1.c (post\lib_powerpc\fpu):	volatile long double m1;
+20010226-1.c (post\lib_powerpc\fpu):	volatile long double m2;
+20010226-1.c (post\lib_powerpc\fpu):	volatile unsigned long mant_long;
+3c589.c (drivers\net):#define mmio_outb(value, addr)	(*((volatile byte *)(addr)) = value)
+3c589.c (drivers\net):#define mmio_inb(addr) (*((volatile byte *)(addr)))
+3c589.c (drivers\net):#define mmio_outw(value, addr)	(*((volatile word *)(addr)) = value)
+3c589.c (drivers\net):#define mmio_inw(addr) (*((volatile word *)(addr)))
+3c589.c (drivers\net):extern int eth_send(volatile void *packet, int length);
+3c589.c (drivers\net):		volatile word *packet_start = (word *)(BASE + VX_W1_RX_PIO_RD_1);
+3c589.c (drivers\net):int eth_send(volatile void *packet, int length) {
+3c589.c (drivers\net):	volatile word *buf = (word *)packet;
+4xx_enet.c (drivers\net):static int ppc_4xx_eth_send (struct eth_device *dev, volatile void *ptr,
+74xx_7xx.h (include):	asm volatile("mfmsr %0" : "=r" (msr) :);
+74xx_7xx.h (include):	asm volatile("mtmsr %0" : : "r" (msr));
+74xx_7xx.h (include):	asm volatile("mfspr %0, 1008" : "=r" (hid0) :);
+74xx_7xx.h (include):	asm volatile("mfspr %0, 1009" : "=r" (hid1) :);
+74xx_7xx.h (include):	asm volatile("mtspr 1008, %0" : : "r" (hid0));
+74xx_7xx.h (include):	asm volatile("mtspr 1009, %0" : : "r" (hid1));
+8390.h (drivers\net):#define n2k_inb(port)   (*((volatile unsigned char *)(port+CONFIG_DRIVER_NE2000_BASE)))
+8390.h (drivers\net):#define n2k_outb(val,port)  (*((volatile unsigned char *)(port+CONFIG_DRIVER_NE2000_BASE)) = val)
+980619-1.c (post\lib_powerpc\fpu):	volatile float reale = 1.0f;
+980619-1.c (post\lib_powerpc\fpu):	volatile float oneplus;
+Ahci.c (drivers\block):static int waiting_for_cmd_completed(volatile u8 *offset,
+Ahci.c (drivers\block):	volatile u8 *mmio = (volatile u8 *)probe_ent->mmio_base;
+Ahci.c (drivers\block):	volatile u8 *port_mmio;
+Ahci.c (drivers\block):	volatile u8 *mmio = (volatile u8 *)probe_ent->mmio_base;
+Ahci.c (drivers\block):	volatile u8 *port_mmio = (volatile u8 *)pp->port_mmio;
+Ahci.c (drivers\block):	volatile u8 *port_mmio = (volatile u8 *)pp->port_mmio;
+Ahci.c (drivers\block):	volatile u8 *port_mmio = (volatile u8 *)pp->port_mmio;
+Altera_tse.c (drivers\net):static void alt_sgdma_print_desc(volatile struct alt_sgdma_descriptor *desc)
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *desc,
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *next,
+Altera_tse.c (drivers\net):static int alt_sgdma_do_sync_transfer(volatile struct alt_sgdma_registers *dev,
+Altera_tse.c (drivers\net):			       volatile struct alt_sgdma_descriptor *desc)
+Altera_tse.c (drivers\net):static int alt_sgdma_do_async_transfer(volatile struct alt_sgdma_registers *dev,
+Altera_tse.c (drivers\net):				volatile struct alt_sgdma_descriptor *desc)
+Altera_tse.c (drivers\net):			volatile void *packet, int length)
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_registers *tx_sgdma = priv->sgdma_tx;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *tx_desc =
+Altera_tse.c (drivers\net):	    (volatile struct alt_sgdma_descriptor *)priv->tx_desc;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *tx_desc_cur =
+Altera_tse.c (drivers\net):	    (volatile struct alt_sgdma_descriptor *)&tx_desc[0];
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&tx_desc[0],
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&tx_desc[1],
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc =
+Altera_tse.c (drivers\net):	    (volatile struct alt_sgdma_descriptor *)priv->rx_desc;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc_cur = &rx_desc[0];
+Altera_tse.c (drivers\net):			(volatile struct alt_sgdma_descriptor *)&rx_desc[0],
+Altera_tse.c (drivers\net):			(volatile struct alt_sgdma_descriptor *)&rx_desc[1],
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev = priv->mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_registers *rx_sgdma = priv->sgdma_rx;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_registers *tx_sgdma = priv->sgdma_tx;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc =
+Altera_tse.c (drivers\net):	    (volatile struct alt_sgdma_descriptor *)&priv->rx_desc[0];
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev = priv->mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_tse_mac *mac_dev = priv->mac_dev;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *tx_desc = priv->tx_desc;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc = priv->rx_desc;
+Altera_tse.c (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc_cur =
+Altera_tse.c (drivers\net):	    (volatile struct alt_sgdma_descriptor *)&rx_desc[0];
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&tx_desc[0],
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&tx_desc[1],
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&rx_desc[0],
+Altera_tse.c (drivers\net):		(volatile struct alt_sgdma_descriptor *)&rx_desc[1],
+Altera_tse.c (drivers\net):	priv->mac_dev = (volatile struct alt_tse_mac *)mac_base;
+Altera_tse.c (drivers\net):	priv->sgdma_rx = (volatile struct alt_sgdma_registers *)sgdma_rx_base;
+Altera_tse.c (drivers\net):	priv->sgdma_tx = (volatile struct alt_sgdma_registers *)sgdma_tx_base;
+Altera_tse.h (drivers\net):typedef volatile union __alt_tse_command_config {
+Altera_tse.h (drivers\net):typedef volatile union __alt_tse_tx_cmd_stat {
+Altera_tse.h (drivers\net):typedef volatile union __alt_tse_rx_cmd_stat {
+Altera_tse.h (drivers\net):	volatile struct alt_tse_mac *mac_dev;
+Altera_tse.h (drivers\net):	volatile struct alt_sgdma_registers *sgdma_rx;
+Altera_tse.h (drivers\net):	volatile struct alt_sgdma_registers *sgdma_tx;
+Altera_tse.h (drivers\net):	volatile struct alt_sgdma_descriptor *rx_desc;
+Altera_tse.h (drivers\net):	volatile struct alt_sgdma_descriptor *tx_desc;
+Altera_tse.h (drivers\net):	volatile unsigned char *rx_buf;
+Am3517_evm.h (include\configs):extern volatile unsigned int boot_flash_env_addr;
+Ambapp.h (include):	volatile unsigned int ilevel;
+Ambapp.h (include):	volatile unsigned int ipend;
+Ambapp.h (include):	volatile unsigned int iforce;
+Ambapp.h (include):	volatile unsigned int iclear;
+Ambapp.h (include):	volatile unsigned int mstatus;
+Ambapp.h (include):	volatile unsigned int notused[11];
+Ambapp.h (include):	volatile unsigned int cpu_mask[16];
+Ambapp.h (include):	volatile unsigned int cpu_force[16];
+Ambapp.h (include):	volatile unsigned int data;
+Ambapp.h (include):	volatile unsigned int status;
+Ambapp.h (include):	volatile unsigned int ctrl;
+Ambapp.h (include):	volatile unsigned int scaler;
+Ambapp.h (include):	volatile unsigned int val;
+Ambapp.h (include):	volatile unsigned int rld;
+Ambapp.h (include):	volatile unsigned int ctrl;
+Ambapp.h (include):	volatile unsigned int unused;
+Ambapp.h (include):	volatile unsigned int scalar;
+Ambapp.h (include):	volatile unsigned int scalar_reload;
+Ambapp.h (include):	volatile unsigned int config;
+Ambapp.h (include):	volatile unsigned int unused;
+Ambapp.h (include):	volatile ambapp_dev_gptimer_element e[8];
+Ambapp.h (include):	volatile unsigned int iodata;
+Ambapp.h (include):	volatile unsigned int ioout;
+Ambapp.h (include):	volatile unsigned int iodir;
+Ambapp.h (include):	volatile unsigned int irqmask;
+Ambapp.h (include):	volatile unsigned int irqpol;
+Ambapp.h (include):	volatile unsigned int irqedge;
+Ambapp.h (include):	volatile unsigned int write;
+Ambapp.h (include):	volatile unsigned int dummy;
+Ambapp.h (include):	volatile unsigned int txcolor;
+Ambapp.h (include):	volatile unsigned int bgcolor;
+Ambapp.h (include):	volatile unsigned int data;
+Ambapp.h (include):	volatile unsigned int status;
+Ambapp.h (include):	volatile unsigned int ctrl;
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mcr p14, 0, %0, c0, c5, 0\n" : : "r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c0, c5, 0\n" : "=r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c0, c1, 0\n" : "=r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mcr p14, 0, %0, c8, c0, 0\n" : : "r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c9, c0, 0\n" : "=r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c14, c0, 0\n" : "=r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mcr p14, 0, %0, c1, c0, 0\n" : : "r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c1, c0, 0\n" : "=r" (x))
+Arm_dcc.c (drivers\serial):		__asm__ volatile ("mrc p14, 0, %0, c0, c0, 0\n" : "=r" (x))
+At91_emac.c (drivers\net):static int at91emac_send(struct eth_device *netdev, volatile void *packet,
+Atomic.h (arch\arm\include\asm):typedef struct { volatile int counter; } atomic_t;
+Atomic.h (arch\arm\include\asm):static inline void atomic_add(int i, volatile atomic_t *v)
+Atomic.h (arch\arm\include\asm):static inline void atomic_sub(int i, volatile atomic_t *v)
+Atomic.h (arch\arm\include\asm):static inline void atomic_inc(volatile atomic_t *v)
+Atomic.h (arch\arm\include\asm):static inline void atomic_dec(volatile atomic_t *v)
+Atomic.h (arch\arm\include\asm):static inline int atomic_dec_and_test(volatile atomic_t *v)
+Atomic.h (arch\arm\include\asm):static inline int atomic_add_negative(int i, volatile atomic_t *v)
+Atomic.h (include\asm):typedef struct { volatile int counter; } atomic_t;
+Atomic.h (include\asm):static inline void atomic_add(int i, volatile atomic_t *v)
+Atomic.h (include\asm):static inline void atomic_sub(int i, volatile atomic_t *v)
+Atomic.h (include\asm):static inline void atomic_inc(volatile atomic_t *v)
+Atomic.h (include\asm):static inline void atomic_dec(volatile atomic_t *v)
+Atomic.h (include\asm):static inline int atomic_dec_and_test(volatile atomic_t *v)
+Atomic.h (include\asm):static inline int atomic_add_negative(int i, volatile atomic_t *v)
+Ax88180.c (drivers\net):ax88180_send (struct eth_device *dev, volatile void *packet, int length)
+Ax88180.c (drivers\net):	volatile unsigned short *txdata = (volatile unsigned short *)packet;
+Ax88180.c (drivers\net):	volatile unsigned long *txdata = (volatile unsigned long *)packet;
+Bcm570x.c (drivers\net):volatile PLM_DEVICE_BLOCK pDevice = NULL;	/* 570x softc */
+Bcm570x.c (drivers\net):volatile PUM_DEVICE_BLOCK pUmDevice = NULL;
+Bcm570x.c (drivers\net):int eth_send (volatile void *packet, int length)
+Bcm570x_mm.h (drivers\net):#define readl(addr) (*(volatile unsigned int*)(addr))
+Bcm570x_mm.h (drivers\net):#define writel(b,addr) ((*(volatile unsigned int *) (addr)) = (b))
+Bcm570x_mm.h (drivers\net):	volatile int interrupt;
+Bfin-twi_i2c.c (drivers\i2c):static volatile struct twi_regs *twi = (void *)TWI0_CLKDIV;
+Bfin_mac.c (drivers\net):static int bfin_EMAC_send(struct eth_device *dev, volatile void *packet,
+Bfin_mac.c (drivers\net):		    (volatile uchar *)(rxbuf[rxIdx]->FrmData->Dest);
+Bfin_mac.c (drivers\net):	bfin_EMAC_send(NULL, (volatile void *)buf, 64);
+Bfin_mac.h (drivers\net):	volatile u32 StatusWord;	/* the frame status word */
+Bfin_mac.h (drivers\net):static int bfin_EMAC_send(struct eth_device *dev, volatile void *packet, int length);
+Bitops.h (arch\arm\include\asm):extern void set_bit(int nr, volatile void * addr);
+Bitops.h (arch\arm\include\asm):extern void clear_bit(int nr, volatile void * addr);
+Bitops.h (arch\arm\include\asm):extern void change_bit(int nr, volatile void * addr);
+Bitops.h (arch\arm\include\asm):static inline void __change_bit(int nr, volatile void *addr)
+Bitops.h (arch\arm\include\asm):static inline int __test_and_set_bit(int nr, volatile void *addr)
+Bitops.h (arch\arm\include\asm):static inline int test_and_set_bit(int nr, volatile void * addr)
+Bitops.h (arch\arm\include\asm):static inline int __test_and_clear_bit(int nr, volatile void *addr)
+Bitops.h (arch\arm\include\asm):static inline int test_and_clear_bit(int nr, volatile void * addr)
+Bitops.h (arch\arm\include\asm):extern int test_and_change_bit(int nr, volatile void * addr);
+Bitops.h (arch\arm\include\asm):static inline int __test_and_change_bit(int nr, volatile void *addr)
+Bitops.h (include\asm):extern void set_bit(int nr, volatile void * addr);
+Bitops.h (include\asm):extern void clear_bit(int nr, volatile void * addr);
+Bitops.h (include\asm):extern void change_bit(int nr, volatile void * addr);
+Bitops.h (include\asm):static inline void __change_bit(int nr, volatile void *addr)
+Bitops.h (include\asm):static inline int __test_and_set_bit(int nr, volatile void *addr)
+Bitops.h (include\asm):static inline int test_and_set_bit(int nr, volatile void * addr)
+Bitops.h (include\asm):static inline int __test_and_clear_bit(int nr, volatile void *addr)
+Bitops.h (include\asm):static inline int test_and_clear_bit(int nr, volatile void * addr)
+Bitops.h (include\asm):extern int test_and_change_bit(int nr, volatile void * addr);
+Bitops.h (include\asm):static inline int __test_and_change_bit(int nr, volatile void *addr)
+Bitops.h (include\linux):static inline void generic_set_bit(int nr, volatile unsigned long *addr)
+Bitops.h (include\linux):static inline void generic_clear_bit(int nr, volatile unsigned long *addr)
+Board.c (arch\arm\lib):	__asm__ __volatile__("": : :"memory");
+Board.c (nand_spl\board\samsung\smdk6410):	__asm__ __volatile__("": : :"memory");
+Bootp.c (net):	volatile uchar *pkt, *iphdr;
+Bootp.c (net):	volatile uchar *pkt, *iphdr;
+Cache-cp15.c (arch\arm\lib):	volatile int i;
+Cache.h (arch\arm\include\asm):	asm volatile("mcr p15, 1, %0, c15, c11, 0 @ invl l2 cache"
+Cache.h (include\asm):	asm volatile("mcr p15, 1, %0, c15, c11, 0 @ invl l2 cache"
+CATcenter.h (include\configs):#define WRITE_NAND_COMMAND(d, adr) do{ *(volatile __u8 *)((unsigned long)adr) = (__u8)(d); } while(0)
+CATcenter.h (include\configs):#define WRITE_NAND_ADDRESS(d, adr) do{ *(volatile __u8 *)((unsigned long)adr) = (__u8)(d); } while(0)
+CATcenter.h (include\configs):#define WRITE_NAND(d, adr) do{ *(volatile __u8 *)((unsigned long)adr) = (__u8)d; } while(0)
+CATcenter.h (include\configs):#define READ_NAND(adr) ((volatile unsigned char)(*(volatile __u8 *)(unsigned long)adr))
+Cfi_flash.c (drivers\mtd):	*(volatile u64 *)addr = value;
+Cfi_flash.c (drivers\mtd):	return *(volatile u64 *)addr;
+Cfi_flash.c (drivers\mtd):	volatile unsigned long *flash;
+Cfi_flash.c (drivers\mtd):	flash = (volatile unsigned long *) info->start[i];
+Cf_spi.c (drivers\spi):	volatile dspi_t *dspi = (dspi_t *) MMAP_DSPI;
+Cf_spi.c (drivers\spi):	volatile dspi_t *dspi = (dspi_t *) MMAP_DSPI;
+Cf_spi.c (drivers\spi):	volatile dspi_t *dspi = (dspi_t *) MMAP_DSPI;
+Cf_spi.c (drivers\spi):	volatile dspi_t *dspi = (dspi_t *) MMAP_DSPI;
+Clps7111.h (include):#define IO_BYTE(offset)	(*(volatile unsigned char *)(IO_START + (offset)))
+Clps7111.h (include):#define IO_WORD(offset)	(*(volatile unsigned long *)(IO_START + (offset)))
+Cmd_display.c (common):	*((volatile char*)(CONFIG_SYS_DISP_CWORD)) = CWORD_CLEAR;
+Cmd_display.c (common):			*((volatile uchar *) (CONFIG_SYS_DISP_CHR_RAM + pos++)) = ' ';
+Cmd_display.c (common):			*((volatile uchar *) (CONFIG_SYS_DISP_CHR_RAM + pos++)) = c;
+Cmd_fdc.c (common):	volatile unsigned char *val =
+Cmd_fdc.c (common):		(volatile unsigned char *)(CONFIG_SYS_ISA_IO_BASE_ADDRESS +
+Cmd_fdc.c (common):	volatile unsigned char *tmp =
+Cmd_fdc.c (common):		(volatile unsigned char *)(CONFIG_SYS_ISA_IO_BASE_ADDRESS +
+Cmd_ide.c (common):# define EIEIO		__asm__ volatile ("eieio")
+Cmd_ide.c (common):# define SYNC		__asm__ volatile ("sync")
+Cmd_ide.c (common):	volatile immap_t *immr = (immap_t *)CONFIG_SYS_IMMR;
+Cmd_ide.c (common):	volatile pcmconf8xx_t *pcmp = &(immr->im_pcmcia);
+Cmd_ide.c (common):	volatile immap_t *immr = (immap_t *)CONFIG_SYS_IMMR;
+Cmd_ide.c (common):	volatile pcmconf8xx_t *pcmp = &(immr->im_pcmcia);
+Cmd_ide.c (common):	volatile uchar *pbuf_even = (uchar *)(ATA_CURR_BASE(dev)+ATA_DATA_EVEN);
+Cmd_ide.c (common):	volatile uchar *pbuf_odd  = (uchar *)(ATA_CURR_BASE(dev)+ATA_DATA_ODD);
+Cmd_ide.c (common):	volatile ushort	*pbuf = (ushort *)(ATA_CURR_BASE(dev)+ATA_DATA_REG);
+Cmd_ide.c (common):	volatile uchar	*pbuf_even;
+Cmd_ide.c (common):	volatile uchar	*pbuf_odd;
+Cmd_ide.c (common):	volatile ushort	*pbuf;
+Cmd_ide.c (common):	volatile uchar	*pbuf_even;
+Cmd_ide.c (common):	volatile uchar	*pbuf_odd;
+Cmd_ide.c (common):	volatile ushort	*pbuf;
+Cmd_ide.c (common):	volatile immap_t *immr = (immap_t *)CONFIG_SYS_IMMR;
+Cmd_ide.c (common):	volatile uchar	*pbuf_even;
+Cmd_ide.c (common):	volatile uchar	*pbuf_odd;
+Cmd_ide.c (common):	volatile ushort	*pbuf;
+Cmd_ide.c (common):	volatile uchar	*pbuf_even;
+Cmd_ide.c (common):	volatile uchar	*pbuf_odd;
+Cmd_ide.c (common):	volatile ushort	*pbuf;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile sysconf8xx_t *sc = &immap->im_siu_conf;
+Cmd_immap.c (common):	volatile sysconf8260_t *sc = &immap->im_siu_conf;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile memctl8xx_t *memctl = &immap->im_memctl;
+Cmd_immap.c (common):	volatile memctl8260_t *memctl = &immap->im_memctl;
+Cmd_immap.c (common):	volatile uint *p = &memctl->memc_br0;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile car8xx_t *car = &immap->im_clkrst;
+Cmd_immap.c (common):	volatile car8260_t *car = &immap->im_clkrst;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile iop8xx_t *iop = &immap->im_ioport;
+Cmd_immap.c (common):	volatile ushort *l, *r;
+Cmd_immap.c (common):	volatile iop8260_t *iop = &immap->im_ioport;
+Cmd_immap.c (common):	volatile uint *l, *r;
+Cmd_immap.c (common):	volatile uint *R;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile cpm8xx_t *cp = &immap->im_cpm;
+Cmd_immap.c (common):	volatile uint *p = &cp->cp_brgc1;
+Cmd_immap.c (common):	volatile uint *p = &immap->im_brgc1;
+Cmd_immap.c (common):	volatile immap_t *immap = (immap_t *) CONFIG_SYS_IMMR;
+Cmd_immap.c (common):	volatile i2c8xx_t *i2c = &immap->im_i2c;
+Cmd_immap.c (common):	volatile cpm8xx_t *cp = &immap->im_cpm;
+Cmd_immap.c (common):	volatile iic_t *iip = (iic_t *) & cp->cp_dparam[PROFF_IIC];
+Cmd_immap.c (common):	volatile i2c8260_t *i2c = &immap->im_i2c;
+Cmd_immap.c (common):	volatile iic_t *iip;
+Cmd_load.c (common):			c = *(volatile uchar*)(address + reclen);	/* get one byte    */
+Cmd_log.c (common):static volatile logbuff_t *log;
+Cmd_mem.c (common):	volatile uint	*longp;
+Cmd_mem.c (common):	volatile ushort *shortp;
+Cmd_mem.c (common):	volatile u_char	*cp;
+Cmd_mem.c (common):	volatile uint	*longp;
+Cmd_mem.c (common):	volatile ushort *shortp;
+Cmd_mem.c (common):	volatile u_char	*cp;
+Cmd_pcmcia.c (common):static void print_fixed (volatile uchar *p)
+Cmd_pcmcia.c (common):static int identify  (volatile uchar *p)
+Cmd_pcmcia.c (common):	volatile uchar *ident = NULL;
+Cmd_pcmcia.c (common):	volatile uchar *feature_p[MAX_FEATURES];
+Cmd_pcmcia.c (common):	volatile uchar *p, *start, *addr;
+Cmd_pcmcia.c (common):	addr = (volatile uchar *)(CONFIG_SYS_PCMCIA_MEM_ADDR +
+Cmd_pcmcia.c (common):	start = p = (volatile uchar *) addr;
+Cmd_pcmcia.c (common):		{ volatile uchar *q = p;
+Cmd_portio.c (common):			__asm__ volatile ("out %0, %%dx"::"a" (ch), "d" (port));
+Cmd_portio.c (common):			__asm__ volatile ("out %0, %%dx"::"a" (w), "d" (port));
+Cmd_portio.c (common):			__asm__ volatile ("out %0, %%dx"::"a" (value), "d" (port));
+Cmd_portio.c (common):			__asm__ volatile ("in %%dx, %0":"=a" (ch):"d" (port));
+Cmd_portio.c (common):			__asm__ volatile ("in %%dx, %0":"=a" (w):"d" (port));
+Cmd_portio.c (common):			__asm__ volatile ("in %%dx, %0":"=a" (l):"d" (port));
+Cmd_reginfo.c (common):	volatile immap_t     *immap  = (immap_t *)CONFIG_SYS_IMMR;
+Cmd_reginfo.c (common):	volatile memctl8xx_t *memctl = &immap->im_memctl;
+Cmd_reginfo.c (common):	volatile sysconf8xx_t *sysconf = &immap->im_siu_conf;
+Cmd_reginfo.c (common):	volatile sit8xx_t *timers = &immap->im_sit;
+Cmd_reginfo.c (common):	volatile immap_t	*immap  = (immap_t *)CONFIG_SYS_IMMR;
+Cmd_reginfo.c (common):	volatile memctl5xx_t	*memctl = &immap->im_memctl;
+Cmd_reginfo.c (common):	volatile sysconf5xx_t	*sysconf = &immap->im_siu_conf;
+Cmd_reginfo.c (common):	volatile sit5xx_t	*timers = &immap->im_sit;
+Cmd_reginfo.c (common):	volatile car5xx_t	*car = &immap->im_clkrst;
+Cmd_reginfo.c (common):	volatile uimb5xx_t	*uimb = &immap->im_uimb;
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS0_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS0_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS0_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00010000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS1_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS1_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS1_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00020000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS2_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS2_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS2_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00040000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS3_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS3_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS3_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00080000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS4_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS4_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS4_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00100000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS5_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS5_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS5_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x00200000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS6_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS6_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS6_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x04000000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS7_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS7_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_CS7_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x08000000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_BOOTCS_START,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_BOOTCS_STOP,
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_BOOTCS_CFG,
+Cmd_reginfo.c (common):		(*(volatile ulong*)MPC5XXX_ADDECR & 0x02000000) ? 1 : 0);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_SDRAM_CS0CFG);
+Cmd_reginfo.c (common):		*(volatile ulong*)MPC5XXX_SDRAM_CS1CFG);

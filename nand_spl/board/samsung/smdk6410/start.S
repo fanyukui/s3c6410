@@ -295,7 +295,11 @@ clbss_l:
 _start_armboot:
 	.word start_armboot
 #else
+#ifdef CONFIG_BOOT_MOVINAND
+    b   movi_bl2_copy
+#else
 	b	nand_boot
+#endif
 /*	.word nand_boot*/
 #endif
 

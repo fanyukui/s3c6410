@@ -66,13 +66,16 @@ void movi_read_env(ulong addr)
 void movi_bl2_copy(void)
 {
 	__attribute__((noreturn)) void (*uboot)(void);
-
+    volatile  u32 *dat = (volatile u32 *)(ELFIN_UART_BASE + UTXH_OFFSET);
+    *dat = 0x4F4F4F4F;
 #if defined(CONFIG_S3C6400)
 	CopyMovitoMem(MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, CONFIG_SYS_CLK_FREQ, MOVI_INIT_REQUIRED);
 #else
 	writel(readl(HM_CONTROL4) | (0x3 << 16), HM_CONTROL4);
 	CopyMovitoMem(HSMMC_CHANNEL, MOVI_BL2_POS, MOVI_BL2_BLKCNT, (uint *)BL2_BASE, MOVI_INIT_REQUIRED);
 #endif
+    *dat = 0x4B4B4B4B;
+
 	/*
 	 * Jump to U-Boot image
 	 */
