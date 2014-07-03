@@ -1621,7 +1621,7 @@ int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset
    	    ExecuteCmd("mtdpart default");
 	    ExecuteCmd("nand erase rootfs");
 	    ExecuteCmd("ubi part rootfs");
-	    ExecuteCmd("ubi create rootfs-nand");
+	    ExecuteCmd("ubi create rootfs-nand 0 s");
    	    ExecuteCmd("saveenv");
 
         /*…’–¥ubi*/

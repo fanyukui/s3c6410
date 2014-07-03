@@ -111,6 +111,8 @@
 #include <config_cmd_default.h>
 
 
+#define CONFIG_UBI_FIFESYSTEM
+
 #ifdef CONFIG_UBI_FIFESYSTEM
 /*ubi*/
 #define CONFIG_CMD_UBIFS
@@ -336,7 +338,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS	"ubi.mtd=2 root=ubi0:rootfs-nand rootfstype=ubifs console=ttySAC0,115200"
+#define CONFIG_BOOTARGS	"ubi.mtd=2 root=ubi0:rootfs-nand rootfstype=ubifs ro console=ttySAC0,115200"
 /*≈‰÷√mtdµ˜ ‘*/
 //#define CONFIG_MTD_DEBUG
 
