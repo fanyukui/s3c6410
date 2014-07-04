@@ -124,12 +124,12 @@ void blue_LED_off(void) __attribute__((weak, alias("__blue_LED_off")));
 #endif
 static int init_baudrate (void)
 {
+
 	char tmp[64];	/* long enough for environment variables */
 	int i = getenv_f("baudrate", tmp, sizeof (tmp));
 	gd->bd->bi_baudrate = gd->baudrate = (i > 0)
 			? (int) simple_strtoul (tmp, NULL, 10)
 			: CONFIG_BAUDRATE;
-
 	return (0);
 }
 
@@ -287,12 +287,14 @@ void start_armboot (void)
 	gd->flags |= GD_FLG_RELOC;
 
 	monitor_flash_len = _bss_start - _armboot_start;
-
+    volatile  u32 *dat = (volatile u32 *)(0x7F005000 + 0x20);
+    u32 temp = 0x41414141;
 	for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
 		if ((*init_fnc_ptr)() != 0) {
-        	hang ();
+        	//hang ();
 		}
-
+        *dat = temp;
+        temp = temp + 0x01010101;
 	}
 
 	/* armboot_start is defined in the board-specific linker script */

@@ -24,8 +24,10 @@
 
 #include <common.h>
 #include <asm/io.h>
-#include <asm/arch/gpio.h>
-#include <asm/arch/clk.h>
+//#include <asm/arch/gpio.h>
+//#include <asm/arch/clk.h>
+#include <asm/arch-at91/gpio.h>
+#include <asm/arch-at91/clk.h>
 #include <lcd.h>
 #include <atmel_lcdc.h>
 

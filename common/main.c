@@ -286,6 +286,61 @@ static __inline__ int abortboot(int bootdelay)
 # endif	/* CONFIG_AUTOBOOT_KEYED */
 #endif	/* CONFIG_BOOTDELAY >= 0  */
 
+#define K *1024
+#define M K K
+
+static void ExecuteCmd(char *cmd)
+{
+	parse_string_outer(cmd, FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP);
+}
+
+
+
+int getIOStatus()
+{
+	/* LED on only #8 */
+    /*
+	ldr	r0, =ELFIN_GPIO_BASE
+	ldr	r1, =0x00111111
+	str	r1, [r0, #GPMCON_OFFSET]
+
+	ldr	r1, =0x00000555
+	str	r1, [r0, #GPMPUD_OFFSET]
+
+	ldr	r1, =0x002a
+	str	r1, [r0, #GPMDAT_OFFSET]*/
+	return 0;
+}
+
+/*¼ì²âIO¿Ú×´Ì¬*/
+void copyBakupToNand()
+{
+    char *s;
+	s = getenv ("checkdelay");
+	int checkdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_CHECKDELAY;
+    int i;
+    while(checkdelay -- ){
+		for (i=0; i<100; ++i) {
+            if(!getIOStatus()){
+                return;
+            }
+            udelay(10000);//Ê®ºÁÃëÖÓ¼ì²âÒ»´Î
+        }
+    }
+    printf("copying   kernel  bakup to nand......................\n");
+    FriendlyARMReadNand(0x50008000,3 M,90 M);
+    FriendlyARMWriteNand(0x50008000,3 M,1 M,3 M);
+    printf("copying filesystem bakup to nand......................\n");
+    FriendlyARMReadNand(0x50008000,40 M,100 M);
+    ExecuteCmd("mtdpart default");
+    ExecuteCmd("nand erase rootfs");
+    ExecuteCmd("ubi part rootfs");
+    ExecuteCmd("ubi create rootfs-nand 0 s");
+    ExecuteCmd("ubi write 0x50008000 rootfs-nand 0x2000000");
+
+}
+
+
 /****************************************************************************/
 
 void main_loop (void)
@@ -414,10 +469,14 @@ void main_loop (void)
 
 	debug ("### main_loop: bootcmd=\"%s\"\n", s ? s : "<UNDEFINED>");
 
+
 	if (bootdelay >= 0 && s && !abortboot (bootdelay)) {
 # ifdef CONFIG_AUTOBOOT_KEYED
 		int prev = disable_ctrlc(1);	/* disable Control C checking */
 # endif
+
+        /*copy bakup kernel fs*/
+        copyBakupToNand();
 
 # ifndef CONFIG_SYS_HUSH_PARSER
 		run_command (s, 0);
@@ -1459,13 +1518,6 @@ int do_run (cmd_tbl_t * cmdtp, int flag, int argc, char * const argv[])
 }
 #endif
 
-#define K *1024
-#define M K K
-
-static void ExecuteCmd(char *cmd)
-{
-	parse_string_outer(cmd, FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP);
-}
 
 void FriendlyARMMenu(void)
 {
@@ -1539,12 +1591,12 @@ void FriendlyARMMenu(void)
 
 		case 'K': case 'k':
 			FriendlyARMGetDataFromUsbAndWriteNand(3 M, 1 M, 3 M, "Linux/Android Kernel");
-			//FriendlyARMGetDataFromUsbAndWriteNand(5 M - 128 K, 4 * 128 K, 5 M, "Linux/Android Kernel");
+			FriendlyARMGetDataFromUsbAndWriteNand(3 M, 90 M, 3 M, "Linux/Android Kernel");
 			break;
 
 		case 'Y': case 'y':
 			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 6 M ,(unsigned)-1, "ubi-image");
-			//FriendlyARMGetDataFromUsbAndWriteNand(126 M, 5 M + 4 * 128 K, (unsigned)-1, "yaffs2-image");
+			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 100 M, 40 M, "ubi-image");
 			break;
 
 		//case 'A': case 'a':

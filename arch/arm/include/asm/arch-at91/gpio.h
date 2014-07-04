@@ -15,7 +15,7 @@
 
 #include <asm/io.h>
 #include <asm/errno.h>
-#include <asm/arch/at91_pio.h>
+//#include <asm/arch/at91_pio.h>
 #include <asm/arch/hardware.h>
 
 #ifdef CONFIG_AT91_LEGACY

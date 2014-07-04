@@ -799,16 +799,8 @@ int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned 
 	int ret;
 	nand_info_t *nand;
 	nand = &nand_info[nand_curr_device];
-
-	nand_read_options_t r_opts;
-	memset(&r_opts, 0, sizeof(r_opts));
-	r_opts.buffer = data_ptr;	/* memory block in which read image is written*/
-	r_opts.length = length;		/* number of bytes to read */
-	r_opts.offset = offset;		/* start address in NAND */
-	r_opts.quiet = 0;			/* don't display progress messages */
-	//r_opts.readoob = 0;			/* put oob data in image */
-	//ret = nand_read_opts(nand,&r_opts);
-    ret = nand_read_skip_bad(nand,offset,length,data_ptr);
+//	printf("offset:%x,length:%x,ptr:%x\n",offset,length,data_ptr);
+    ret = nand_read_skip_bad(nand,offset,&length,data_ptr);
 
 	return ret;
 }
@@ -816,7 +808,7 @@ int FriendlyARMReadNand(unsigned char *data_ptr, unsigned long length, unsigned 
 int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long offset, unsigned MaxNandSize)
 {
 	nand_info_t *nand;
-	int ret,length;
+	int ret,length = len;
 
 	if (nand_curr_device < 0 || nand_curr_device >= CFG_MAX_NAND_DEVICE ||
 	    !nand_info[nand_curr_device].name) {
@@ -831,12 +823,15 @@ int FriendlyARMWriteNand(const unsigned char*data, unsigned  len, unsigned long 
     }
     /*擦除分区*/
     nand_erase_options_t opts;
-	opts.length = (len / CONFIG_SYS_NAND_BLOCK_SIZE + 1) * CONFIG_SYS_NAND_BLOCK_SIZE;
+	opts.length = (MaxNandSize  / CONFIG_SYS_NAND_BLOCK_SIZE ) * CONFIG_SYS_NAND_BLOCK_SIZE;
 	opts.quiet = 0;
 	opts.jffs2 = 0;
 	opts.scrub = 0;
     opts.offset = offset;
     nand_erase_opts(nand, &opts);
+
+   // printf("offset:%x,length:%x,data:%x\n",offset,length,data);
+
     /*调用写函数*/
     ret = nand_write_skip_bad(nand,offset,&length,data);
 

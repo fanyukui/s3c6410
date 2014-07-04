@@ -67,6 +67,24 @@
 #define CONFIG_DISPLAY_CPUINFO
 #define CONFIG_DISPLAY_BOARDINFO
 
+/* Boot configuration (define only one of next 3) */
+#define CONFIG_BOOT_NAND
+//#define CONFIG_BOOT_MOVINAND
+/* None of these are currently implemented. Left from the original Samsung
+ * version for reference
+#define CONFIG_BOOT_NOR
+#define CONFIG_BOOT_MOVINAND
+#define CONFIG_BOOT_ONENAND
+*/
+
+/*
+    LCD
+*/
+//#define CONFIG_LCD
+#ifdef CONFIG_LCD
+#define CONFIG_LCD_LOGO
+#endif
+
 /*
  * Size of malloc() pool
  */
@@ -86,7 +104,7 @@
 #define CONFIG_CLKSRC_CLKUART
 #define CONFIG_UART_66	/* default clock value of CLK_UART */
 #define CONFIG_SYNC_MODE
-//#define UART_CLK_CFG
+
 
 /*
  * select serial console configuration
@@ -111,7 +129,9 @@
 #include <config_cmd_default.h>
 
 
+#ifndef CONFIG_BOOT_MOVINAND
 #define CONFIG_UBI_FIFESYSTEM
+#endif
 
 #ifdef CONFIG_UBI_FIFESYSTEM
 /*ubi*/
@@ -163,6 +183,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 #define CONFIG_CMD_EXT2
 
 #define CONFIG_BOOTDELAY	3
+#define CONFIG_CHECKDELAY   2
 
 #define CONFIG_ZERO_BOOTDELAY_CHECK
 
@@ -254,7 +275,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 /* base address for uboot */
 #define CONFIG_SYS_PHY_UBOOT_BASE	(CONFIG_SYS_SDRAM_BASE + 0x07e00000)
 /* total memory available to uboot */
-#define CONFIG_SYS_UBOOT_SIZE		(1024 * 1024)
+#define CONFIG_SYS_UBOOT_SIZE		(512 * 1024)
 
 /* Put environment copies after the end of U-Boot owned RAM */
 #define CONFIG_NAND_ENV_DST	(CONFIG_SYS_UBOOT_BASE + CONFIG_SYS_UBOOT_SIZE)
@@ -319,15 +340,10 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 				 48, 49, 50, 51, 52, 53, 54, 55, \
 				 56, 57, 58, 59, 60, 61, 62, 63}
 
-/* Boot configuration (define only one of next 3) */
-#define CONFIG_BOOT_NAND
-//#define CONFIG_BOOT_MOVINAND
-/* None of these are currently implemented. Left from the original Samsung
- * version for reference
-#define CONFIG_BOOT_NOR
-#define CONFIG_BOOT_MOVINAND
-#define CONFIG_BOOT_ONENAND
-*/
+
+#ifdef  CONFIG_BOOT_MOVINAND
+#define UART_CLK_CFG
+#endif
 
 #define CONFIG_NAND
 #define CONFIG_NAND_S3C64XX
