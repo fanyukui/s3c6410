@@ -295,7 +295,7 @@ static void ExecuteCmd(char *cmd)
 }
 
 
-
+/*¼ì²âIO¿Ú×´Ì¬*/
 int getIOStatus()
 {
 	/* LED on only #8 */
@@ -311,14 +311,16 @@ int getIOStatus()
 	str	r1, [r0, #GPMDAT_OFFSET]*/
 	return 0;
 }
+extern void lcd_puts (const char *s);
 
-/*¼ì²âIO¿Ú×´Ì¬*/
+/*¿½±´±¸·ÝkernelºÍfilesystem*/
 void copyBakupToNand()
 {
     char *s;
 	s = getenv ("checkdelay");
 	int checkdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_CHECKDELAY;
     int i;
+    lcd_puts("copyBakupToNand...............\n");
     while(checkdelay -- ){
 		for (i=0; i<100; ++i) {
             if(!getIOStatus()){

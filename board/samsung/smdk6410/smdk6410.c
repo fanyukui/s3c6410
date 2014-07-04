@@ -119,6 +119,8 @@ ulong board_flash_get_legacy (ulong base, int banknum, flash_info_t *info)
 		return 0;
 }
 
+
+
 #ifdef CONFIG_CMD_NET
 int board_eth_init(bd_t *bis)
 {

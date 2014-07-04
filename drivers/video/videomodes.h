@@ -78,8 +78,20 @@ struct ctfb_vesa_modes {
 #define RES_MODE_960_720	3
 #define RES_MODE_1152x864	4
 #define RES_MODE_1280x1024	5
-#define RES_MODES_COUNT		6
+#define RES_MODE_240x320	6
+#define RES_MODE_480x272	7
+#define RES_MODES_COUNT		8
 
+
+#if 0
+#define RES_MODE_640x480	0
+#define RES_MODE_800x600	1
+#define RES_MODE_1024x768	2
+#define RES_MODE_960_720	3
+#define RES_MODE_1152x864	4
+#define RES_MODE_1280x1024	5
+#define RES_MODES_COUNT		6
+#endif
 #define VESA_MODES_COUNT 19
 
 extern const struct ctfb_vesa_modes vesa_modes[];
