@@ -320,7 +320,7 @@ void copyBakupToNand()
 	s = getenv ("checkdelay");
 	int checkdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_CHECKDELAY;
     int i;
-    lcd_puts("copyBakupToNand...............\n");
+    lcd_puts("copyBakupToNand.................\n");
     while(checkdelay -- ){
 		for (i=0; i<100; ++i) {
             if(!getIOStatus()){
