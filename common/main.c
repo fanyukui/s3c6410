@@ -330,10 +330,10 @@ void copyBakupToNand()
         }
     }
     printf("copying   kernel  bakup to nand......................\n");
-    FriendlyARMReadNand(0x50008000,3 M,90 M);
-    FriendlyARMWriteNand(0x50008000,3 M,1 M,3 M);
+    FriendlyARMReadNand(0x50008000,5 M,100 M);
+    FriendlyARMWriteNand(0x50008000,5 M,1 M,5 M);
     printf("copying filesystem bakup to nand......................\n");
-    FriendlyARMReadNand(0x50008000,40 M,100 M);
+    FriendlyARMReadNand(0x50008000,20 M,110 M);
     ExecuteCmd("mtdpart default");
     ExecuteCmd("nand erase rootfs");
     ExecuteCmd("ubi part rootfs");
@@ -1592,13 +1592,13 @@ void FriendlyARMMenu(void)
 			break;
 
 		case 'K': case 'k':
-			FriendlyARMGetDataFromUsbAndWriteNand(3 M, 1 M, 3 M, "Linux/Android Kernel");
-			FriendlyARMGetDataFromUsbAndWriteNand(3 M, 90 M, 3 M, "Linux/Android Kernel");
+			FriendlyARMGetDataFromUsbAndWriteNand(5 M, 1 M, 5 M, "Linux/Android Kernel");
+			FriendlyARMGetDataFromUsbAndWriteNand(5 M, 100 M, 5 M, "Linux/Android Kernel");
 			break;
 
 		case 'Y': case 'y':
-			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 6 M ,(unsigned)-1, "ubi-image");
-			FriendlyARMGetDataFromUsbAndWriteNand(200 M, 100 M, 40 M, "ubi-image");
+			FriendlyARMGetDataFromUsbAndWriteNand(20 M, 6 M ,(unsigned)-1, "ubi-image");
+			FriendlyARMGetDataFromUsbAndWriteNand(20 M, 110 M, 20 M, "ubi-image");
 			break;
 
 		//case 'A': case 'a':

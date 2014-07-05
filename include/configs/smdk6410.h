@@ -191,7 +191,7 @@
 
 #define MTDPARTS_DEFAULT	"mtdparts=nand0:1m(u-boot),"	\
     						"5m(kernel),"	\
-	    					"40m(rootfs),"		\
+	    					"20m(rootfs),"		\
 		    				"40m(data)," \
                             "-(reserved)"
 #endif
@@ -399,7 +399,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
-#define CONFIG_BOOTARGS	"ubi.mtd=2 root=ubi0:rootfs-nand rootfstype=ubifs ro console=ttySAC0,115200"
+#define CONFIG_BOOTARGS	"ubi.mtd=2,2048 root=ubi0:rootfs-nand rootfstype=ubifs ro console=ttySAC0,115200"
 /*≈‰÷√mtdµ˜ ‘*/
 //#define CONFIG_MTD_DEBUG
 
