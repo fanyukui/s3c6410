@@ -1593,12 +1593,10 @@ void FriendlyARMMenu(void)
 
 		case 'K': case 'k':
 			FriendlyARMGetDataFromUsbAndWriteNand(5 M, 1 M, 5 M, "Linux/Android Kernel");
-			FriendlyARMGetDataFromUsbAndWriteNand(5 M, 100 M, 5 M, "Linux/Android Kernel");
 			break;
 
 		case 'Y': case 'y':
 			FriendlyARMGetDataFromUsbAndWriteNand(20 M, 6 M ,(unsigned)-1, "ubi-image");
-			FriendlyARMGetDataFromUsbAndWriteNand(20 M, 110 M, 20 M, "ubi-image");
 			break;
 
 		//case 'A': case 'a':
@@ -1650,8 +1648,8 @@ void FriendlyARMMenu(void)
 #endif
 }
 
-#undef K
-#undef M
+//#undef K
+//#undef M
 
 extern int FriendlyARMGetDataFromUSB (unsigned max_len, unsigned char **data_ptr, unsigned *received_len);
 extern int FriendlyARMWriteNand(const unsigned char*data, unsigned len, unsigned long offset, unsigned MaxNandSize);
@@ -1684,6 +1682,12 @@ int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset
         sprintf(format,"ubi write %x rootfs-nand  %x",RevPtr,RevLen);
         printf("%s\n",format);
   	    ExecuteCmd(format);
+
+       //write bakup ubi
+       ret = FriendlyARMWriteNand(RevPtr, RevLen, 110 M, max_len);
+       printf("Writing %s %s\n", "ubi-image bakup", ret >= 0 ? "successed" : "failed");
+
+
     }
     else{
     	int ret;
@@ -1699,6 +1703,13 @@ int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset
     	printf("RevPtr=0x%x,RevLen=0x%x,offset=0x%x\n",RevPtr,RevLen,offset);
     	ret = FriendlyARMWriteNand(RevPtr, RevLen, offset, MaxNandSize);
     	printf("Writing %s %s\n", Name, ret >= 0 ? "successed" : "failed");
+
+       //write bakup kernel
+        if(strcmp(Name,"Linux/Android Kernel") == 0){
+    	    ret = FriendlyARMWriteNand(RevPtr, RevLen, 100 M, MaxNandSize);
+         	printf("Writing %s %s\n", "Linux/Android Kernel bakup", ret >= 0 ? "successed" : "failed");
+        }
+
     	return ret;
 
     }

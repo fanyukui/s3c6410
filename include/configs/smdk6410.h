@@ -227,8 +227,8 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 #define CONFIG_CMD_FAT
 #define CONFIG_CMD_EXT2
 
-#define CONFIG_BOOTDELAY	3
-#define CONFIG_CHECKDELAY   2
+#define CONFIG_BOOTDELAY	1
+#define CONFIG_CHECKDELAY   5
 
 #define CONFIG_ZERO_BOOTDELAY_CHECK
 
