@@ -207,7 +207,7 @@ void	lcd_printf	(const char *fmt, ...);
 
 /* Default to 8bpp if bit depth not specified */
 #ifndef LCD_BPP
-# define LCD_BPP			LCD_COLOR32
+# define LCD_BPP			LCD_COLOR16
 #endif
 #ifndef LCD_DF
 # define LCD_DF			1
@@ -268,7 +268,7 @@ void	lcd_printf	(const char *fmt, ...);
 # define CONSOLE_ROWS		(panel_info.vl_row / VIDEO_FONT_HEIGHT)
 #endif
 
-#define MAX_ROW_CHAR_NUM    42//(panel_info.vl_col / VIDEO_FONT_WIDTH)
+#define MAX_ROW_CHAR_NUM    80//(panel_info.vl_col / VIDEO_FONT_WIDTH)
 #define CONSOLE_COLS		(MAX_ROW_CHAR_NUM)
 #define CONSOLE_ROW_SIZE	(VIDEO_FONT_HEIGHT * lcd_line_length)
 #define CONSOLE_ROW_FIRST	(lcd_console_address)

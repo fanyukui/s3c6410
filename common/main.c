@@ -298,29 +298,32 @@ static void ExecuteCmd(char *cmd)
 /*检测IO口状态*/
 int getIOStatus()
 {
-	/* LED on only #8 */
-    /*
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x00111111
-	str	r1, [r0, #GPMCON_OFFSET]
-
-	ldr	r1, =0x00000555
-	str	r1, [r0, #GPMPUD_OFFSET]
-
-	ldr	r1, =0x002a
-	str	r1, [r0, #GPMDAT_OFFSET]*/
-	return 0;
+    volatile u32 *kdat = 0x7f008000 + 0x808;  //GPKDAT
+    return !(*kdat & (1 << 10));  //第11位置0
 }
 extern void lcd_puts (const char *s);
 
 /*拷贝备份kernel和filesystem*/
 void copyBakupToNand()
 {
+    volatile u32 *con = 0x7f008000 + 0x804;  //GPKCON1
+    volatile u32 *pud = 0x7f008000 + 0x80C;  //GPKPUD
+    *con = 0x00000;
+    *pud = 0xAAAAA;
+
+    volatile u32 *lcon = 0x7F008810;//GPLCON0
+    volatile u32 *lpud = 0x7F00881C;//GPLPUD
+    *lcon = 0x11111;
+    *lpud = 0xAAA9A;
+    volatile u32 *ldat = 0x7F008818; // GPLDAT
+    *ldat = (~0x01);
+
+    int i;
     char *s;
 	s = getenv ("checkdelay");
 	int checkdelay = s ? (int)simple_strtol(s, NULL, 10) : CONFIG_CHECKDELAY;
-    int i;
-    lcd_puts("copyBakupToNand.................\n");
+
+
     while(checkdelay -- ){
 		for (i=0; i<100; ++i) {
             if(!getIOStatus()){
@@ -338,7 +341,7 @@ void copyBakupToNand()
     ExecuteCmd("nand erase rootfs");
     ExecuteCmd("ubi part rootfs");
     ExecuteCmd("ubi create rootfs-nand 0 s");
-    ExecuteCmd("ubi write 0x50008000 rootfs-nand 0x2000000");
+    ExecuteCmd("ubi write 0x50008000 rootfs-nand 0x1200000");
 
 }
 

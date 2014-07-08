@@ -62,17 +62,18 @@
 
 #ifdef CONFIG_LCD
 
-#define S3CFB_HSW               41
-#define S3CFB_HBP               2
-#define S3CFB_HFP               2
+#define S3CFB_HSW               4  /* hsync width */
+#define S3CFB_HBP               127   /* back porch */
+#define S3CFB_HFP               8   /* front porch */
 
-#define S3CFB_VSW               10
-#define S3CFB_VBP               2
-#define S3CFB_VFP               2
+#define S3CFB_VSW               4   /* hsync width */
+#define S3CFB_VBP               14    /* back porch */
+#define S3CFB_VFP               2    /* front porch */
 
-#define S3CFB_HRES              480
-#define S3CFB_VRES              272
-#define S3CFB_VFRAME_FREQ       60
+#define S3CFB_HRES              800   /* horizon pixel  x resolition */
+#define S3CFB_VRES              599   /* line cnt       y resolution */
+#define S3CFB_VFRAME_FREQ        60    /* frame rate freq */
+
 #if LCD_BPP == LCD_COLOR32
 #define PIXELBITS               32
 #else
@@ -441,7 +442,7 @@ int drv_lcd_init (void)
 	int rc;
 
 	lcd_base = (void *)(gd->fb_base);
-	osd_frame_buffer=(void*)((char*)lcd_base + calc_fbsize() * 1);
+	osd_frame_buffer=(void*)((char*)lcd_base);
 
 	lcd_line_length = (panel_info.vl_col * /*NBITS*/ (panel_info.vl_bpix)) / 8;
 
@@ -530,7 +531,6 @@ static int lcd_init (void *lcdbase)
 {
 	/* Initialize the lcd controller */
 	debug ("[LCD] Initializing LCD frambuffer at %p\n", lcdbase);
-
 	lcd_ctrl_init (lcdbase);
 //	lcd_clear (NULL, 1, 1, NULL);	/* dummy args */
 //	lcd_enable ();
@@ -907,6 +907,7 @@ void lcd_ctrl_init(void *lcdbase)
 	lcd_disable();
 	S3C_WINCON0 &= (~(S3C_WINCONx_ENWIN_F_ENABLE));
 
+
 	MIFPCON_REG &= (~SEL_BYPASS_MASK);
 	SPCON_REG &= (~LCD_SEL_MASK);
 	SPCON_REG |= (RGB_IF_STYLE_MASK);
@@ -947,6 +948,7 @@ void lcd_ctrl_init(void *lcdbase)
 	S3C_VIDCON1 = (unsigned int)nn;
 	S3C_VIDCON2 = 0;
 
+    /*bits determine the vertical\horizontal size of display */
 	S3C_VIDTCON0 = S3C_VIDTCON0_VBPD(S3CFB_VBP - 1) | S3C_VIDTCON0_VFPD(S3CFB_VFP - 1) | S3C_VIDTCON0_VSPW(S3CFB_VSW - 1);
 	S3C_VIDTCON1 = S3C_VIDTCON1_HBPD(S3CFB_HBP - 1) | S3C_VIDTCON1_HFPD(S3CFB_HFP -1) | S3C_VIDTCON1_HSPW(S3CFB_HSW - 1);
 	S3C_VIDTCON2 = S3C_VIDTCON2_LINEVAL(S3CFB_VRES - 1) | S3C_VIDTCON2_HOZVAL(S3CFB_HRES - 1);
@@ -967,11 +969,15 @@ void lcd_ctrl_init(void *lcdbase)
 	S3C_VIDOSD0B = S3C_VIDOSDxB_OSD_RBX_F(S3CFB_HRES - 1) | S3C_VIDOSDxB_OSD_RBY_F(S3CFB_VRES - 1);
 	S3C_VIDOSD0C = S3C_VIDOSD0C_OSDSIZE(S3CFB_HRES*S3CFB_VRES);
 
+/*
 	S3C_VIDOSD1A = S3C_VIDOSDxA_OSD_LTX_F(0) + S3C_VIDOSDxA_OSD_LTY_F(0);
 	S3C_VIDOSD1B = S3C_VIDOSDxB_OSD_RBX_F(S3CFB_HRES - 1) | S3C_VIDOSDxB_OSD_RBY_F(S3CFB_VRES - 1);
-	S3C_VIDOSD1C = 0xDDD000;/*alpha blending*/
-	S3C_VIDOSD1D = S3C_VIDOSD0C_OSDSIZE(S3CFB_HRES*S3CFB_VRES);
-
+	S3C_VIDOSD1C = 0xDDD000;
+	S3C_VIDOSD1D = S3C_VIDOSD0C_OSDSIZE(S3CFB_HRES*S3CFB_VRES);*/
+	S3C_VIDOSD1A = 0;
+    S3C_VIDOSD1B = 0;
+    S3C_VIDOSD1C = 0;
+    S3C_VIDOSD1D = 0;
 	S3C_VIDOSD2A = 0;
 	S3C_VIDOSD2B = 0;
 	S3C_VIDOSD2C = 0;
@@ -985,17 +991,19 @@ void lcd_ctrl_init(void *lcdbase)
 
 	fb_size = calc_fbsize();
 
-	S3C_VIDW00ADD0B0 = virt_to_phys(lcdbase);
+    /*Window 0¡¯s buffer start address register*/
+	S3C_VIDW00ADD0B0 = virt_to_phys(osd_frame_buffer);
 	S3C_VIDW00ADD0B1 = 0;
-	S3C_VIDW01ADD0B0 = virt_to_phys(osd_frame_buffer);
+	S3C_VIDW01ADD0B0 = 02;
 	S3C_VIDW01ADD0B1 = 0;
 	S3C_VIDW02ADD0 = 0;
 	S3C_VIDW03ADD0 = 0;
 	S3C_VIDW04ADD0 = 0;
 
-	S3C_VIDW00ADD1B0 = virt_to_phys((unsigned int)(lcdbase) + fb_size);
+    /*Window 0¡¯s buffer end address register*/
+	S3C_VIDW00ADD1B0 = virt_to_phys(osd_frame_buffer) + fb_size;
 	S3C_VIDW00ADD1B1 = 0;
-	S3C_VIDW01ADD1B0 = virt_to_phys(osd_frame_buffer) + fb_size;
+	S3C_VIDW01ADD1B0 = 0;
 	S3C_VIDW01ADD1B1 = 0;
 	S3C_VIDW02ADD1 = 0;
 	S3C_VIDW03ADD1 = 0;
@@ -1011,7 +1019,7 @@ void lcd_ctrl_init(void *lcdbase)
 	S3C_W1KEYCON1  = 0x00000000;/*color key*/
 
 #if 1
-	memset(lcdbase,0x00,fb_size*2);
+	memset(lcdbase,0x00,fb_size);
 #else
 	pp = lcdbase;
 	for(i=0;i< S3CFB_HRES * S3CFB_VRES;i++)
@@ -1023,7 +1031,7 @@ void lcd_ctrl_init(void *lcdbase)
 	lcd_enable();
 
 	S3C_WINCON0 |= S3C_WINCONx_ENWIN_F_ENABLE;
-	S3C_WINCON1 |= S3C_WINCONx_ENWIN_F_ENABLE;
+	//S3C_WINCON1 |= S3C_WINCONx_ENWIN_F_ENABLE;
 	return (0);
 }
 

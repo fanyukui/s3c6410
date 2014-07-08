@@ -127,6 +127,8 @@
 //#define CONFIG_LCD_LOGO
 #endif
 
+#define USB_STOR_DEBUG
+#define USB_DEBUG
 
 //#define virt_to_phys(x)	(x)
 
@@ -146,9 +148,9 @@
 
 
 /*Uart*/
-#define CONFIG_CLKSRC_CLKUART
-#define CONFIG_UART_66	/* default clock value of CLK_UART */
-#define CONFIG_SYNC_MODE
+//#define CONFIG_CLKSRC_CLKUART
+//#define CONFIG_UART_66	/* default clock value of CLK_UART */
+//#define CONFIG_SYNC_MODE
 
 
 /*

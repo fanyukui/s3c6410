@@ -55,7 +55,7 @@
 #include <asm/4xx_pci.h>
 #endif
 
-#undef USB_DEBUG
+//#undef USB_DEBUG
 
 #ifdef	USB_DEBUG
 #define	USB_PRINTF(fmt, args...)	printf(fmt , ##args)

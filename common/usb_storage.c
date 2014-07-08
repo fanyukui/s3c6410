@@ -56,7 +56,7 @@
 #include <part.h>
 #include <usb.h>
 
-#undef USB_STOR_DEBUG
+//#undef USB_STOR_DEBUG
 #undef BBB_COMDAT_TRACE
 #undef BBB_XPORT_TRACE
 
@@ -1192,6 +1192,10 @@ int usb_storage_probe(struct usb_device *dev, unsigned int ifnum,
 		subclass = US_SC_UFI;	    /* an assumption */
 	}
 #endif
+    USB_STOR_PRINTF("bDeviceClass:%d,bInterfaceClass:%d,bInterfaceSubClass:%d",
+           dev->descriptor.bDeviceClass,
+           iface->desc.bInterfaceClass,
+           iface->desc.bInterfaceSubClass);
 
 	if (dev->descriptor.bDeviceClass != 0 ||
 			iface->desc.bInterfaceClass != USB_CLASS_MASS_STORAGE ||
