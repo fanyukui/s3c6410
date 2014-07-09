@@ -1712,6 +1712,9 @@ int FriendlyARMGetDataFromUsbAndWriteNand(unsigned max_len, unsigned long offset
     	    ret = FriendlyARMWriteNand(RevPtr, RevLen, 100 M, MaxNandSize);
          	printf("Writing %s %s\n", "Linux/Android Kernel bakup", ret >= 0 ? "successed" : "failed");
         }
+        if(strcmp(Name,"U-Boot.bin") == 0){
+  	        ExecuteCmd("saveenv");   //delete crc error
+        }
 
     	return ret;
 
