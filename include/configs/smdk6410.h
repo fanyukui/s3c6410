@@ -322,7 +322,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 /* base address for uboot */
 #define CONFIG_SYS_PHY_UBOOT_BASE	(CONFIG_SYS_SDRAM_BASE + 0x07e00000)
 /* total memory available to uboot */
-#define CONFIG_SYS_UBOOT_SIZE		(512 * 1024)
+#define CONFIG_SYS_UBOOT_SIZE		(1024 * 1024)
 
 /* Put environment copies after the end of U-Boot owned RAM */
 #define CONFIG_NAND_ENV_DST	(CONFIG_SYS_UBOOT_BASE + CONFIG_SYS_UBOOT_SIZE)
