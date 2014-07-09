@@ -1817,6 +1817,7 @@ static int hc_interrupt(void)
 #else
 		wait_ms(1);
 #endif
+
 		/* FIXME: be optimistic, hope that bug won't repeat often. */
 		/* Make some non-interrupt context restart the controller. */
 		/* Count and limit the retries though; either hardware or */

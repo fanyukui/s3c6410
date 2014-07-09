@@ -122,13 +122,13 @@
 #define VIDEO_GETC_FCT         serial_getc
 #endif  /*enable LCD display*/
 
-#define CONFIG_LCD
+//#define CONFIG_LCD
 #ifdef CONFIG_LCD
 //#define CONFIG_LCD_LOGO
 #endif
 
-#define USB_STOR_DEBUG
-#define USB_DEBUG
+//#define USB_STOR_DEBUG
+//#define USB_DEBUG
 
 //#define virt_to_phys(x)	(x)
 
