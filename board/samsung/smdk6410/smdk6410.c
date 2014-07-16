@@ -69,6 +69,27 @@ int board_init(void)
 
 	/* NOR-flash in SROM0 */
 
+	s3c64xx_gpio * const gpio = s3c64xx_get_base_gpio();
+
+    //init gpio func for MMC	+
+	gpio->GPCCON = 0x22222222;
+	gpio->GPCPUD = 0x00000000;
+	gpio->GPCCONSLP = 0x00000000;
+	gpio->GPCPUDSLP = 0x00000000;
+
+	gpio->GPGCON = 0x02222222;
+	gpio->GPGPUD = 0x00000000;
+	gpio->GPGCONSLP = 0x00000000;
+	gpio->GPGPUDSLP = 0x00000000;
+
+	gpio->GPHCON0 = 0x22222222;
+	gpio->GPHCON1 = 0x00000022;
+	gpio->GPHPUD = 0x00000000;
+	gpio->GPHCONSLP = 0x00000000;
+	gpio->GPHPUDSLP = 0x00000000;
+	//init gpio func for MMC	-
+
+
 	/* Enable WAIT */
 	SROM_BW_REG |= 4 | 8 | 1;
 

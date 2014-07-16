@@ -1,15 +1,18 @@
 /*
  * Memory Setup stuff - taken from blob memsetup.S
  *
- * Copyright (C) 1999 2000 2001 Erik Mouw (J.A.K.Mouw@its.tudelft.nl) and
- *		       Jan-Derk Bakker (J.D.Bakker@its.tudelft.nl)
+ * Copyright (C) 1999 2000 2001 Erik Mouw (J.A.K.Mouw at its.tudelft.nl) and
+ *		       Jan-Derk Bakker (J.D.Bakker at its.tudelft.nl)
  *
  * Modified for the Samsung SMDK2410 by
  * (C) Copyright 2002
- * David Mueller, ELSOFT AG, <d.mueller@elsoft.ch>
+ * David Mueller, ELSOFT AG, <d.mueller at elsoft.ch>
  *
  * (C) Copyright 2008
- * Guennadi Liakhovetki, DENX Software Engineering, <lg@denx.de>
+ * Guennadi Liakhovetki, DENX Software Engineering, <lg at denx.de>
+ *
+ * (C) Copyright 2010
+ * Alex Ling, <kasimling at gmail.com>
  *
  * See file CREDITS for list of people who contributed to this
  * project.
@@ -51,17 +54,6 @@ _TEXT_BASE:
 lowlevel_init:
 	mov	r12, lr
 
-	/* LED on only #8 */
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x55540000
-	str	r1, [r0, #GPNCON_OFFSET]
-
-	ldr	r1, =0x55555555
-	str	r1, [r0, #GPNPUD_OFFSET]
-
-	ldr	r1, =0xf000
-	str	r1, [r0, #GPNDAT_OFFSET]
-
 	/* Disable Watchdog */
 	ldr	r0, =0x7e000000		@0x7e004000
 	orr	r0, r0, #0x4000
@@ -94,19 +86,15 @@ lowlevel_init:
 	/* init system clock */
 	bl system_clock_init
 
+#ifndef CONFIG_NAND_SPL
 	/* for UART */
 	bl uart_asm_init
+#endif
 
-/*
-	ldr	r0, =ELFIN_UART_BASE
-	ldr	r1, =0x4f4f4f4f
-	str	r1, [r0, #UTXH_OFFSET]
-	*/
-
-//#ifdef CONFIG_BOOT_NAND
+#ifdef CONFIG_BOOT_NAND
 	/* simple init for NAND */
 	bl nand_asm_init
-//#endif
+#endif
 
 	/* Memory subsystem address 0x7e00f120 */
 	ldr	r0, =ELFIN_MEM_SYS_CFG
@@ -114,7 +102,6 @@ lowlevel_init:
 	/* Xm0CSn2 = NFCON CS0, Xm0CSn3 = NFCON CS1 */
 	mov	r1, #S3C64XX_MEM_SYS_CFG_NAND
 	str	r1, [r0]
-
 
 	bl	mem_ctrl_asm_init
 
@@ -135,11 +122,6 @@ wakeup_reset:
 	ldr	r0, =(ELFIN_CLOCK_POWER_BASE + WAKEUP_STAT_OFFSET)
 	ldr	r1, [r0]
 	str	r1, [r0]
-
-	/* LED test */
-	ldr	r0, =ELFIN_GPIO_BASE
-	ldr	r1, =0x3000
-	str	r1, [r0, #GPNDAT_OFFSET]
 
 	/* Load return address and jump to kernel */
 	ldr	r0, =(ELFIN_CLOCK_POWER_BASE + INF_REG0_OFFSET)
@@ -189,7 +171,7 @@ check_syncack:
 	 * This was unconditional in original Samsung sources, but it doesn't
 	 * seem to make much sense on S3C6400.
 	 */
-#ifndef CONFIG_S3C6400
+#if !defined(CONFIG_S3C6400) && !defined(CONFIG_S3C6410)
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	bic	r1, r1, #0xC0
 	orr	r1, r1, #0x40
@@ -207,69 +189,6 @@ wait_for_async:
 	str	r1, [r0, #OTHERS_OFFSET]
 #endif
 
-#ifdef UART_CLK_CFG
-	mov	r1, #0xff00
-	orr	r1, r1, #0xff
-	str	r1, [r0, #APLL_LOCK_OFFSET]
-	str	r1, [r0, #MPLL_LOCK_OFFSET]
-	str	r1, [r0, #EPLL_LOCK_OFFSET]
-/* CLKUART(=66.5Mhz) = CLKUART_input(532/2=266Mhz) / (UART_RATIO(3)+1) */
-/* CLKUART(=50Mhz) = CLKUART_input(400/2=200Mhz) / (UART_RATIO(3)+1) */
-/* Now, When you use UART CLK SRC by EXT_UCLK1, We support 532MHz & 400MHz value */
-
-#if defined(CONFIG_CLKSRC_CLKUART)
-	ldr   	r1, [r0, #CLK_DIV2_OFFSET]
-	bic	r1, r1, #0x70000
-	orr	r1, r1, #0x30000
-	str	r1, [r0, #CLK_DIV2_OFFSET]
-#endif
-
-
-	ldr   	r1, [r0, #CLK_DIV0_OFFSET]	/*Set Clock Divider*/
-	bic	r1, r1, #0x30000
-	bic	r1, r1, #0xff00
-	bic	r1, r1, #0xff
-	ldr	r2, =CLK_DIV_VAL
-	orr	r1, r1, r2
-	str	r1, [r0, #CLK_DIV0_OFFSET]
-
-	ldr	r1, =APLL_VAL
-	str	r1, [r0, #APLL_CON_OFFSET]
-	ldr	r1, =MPLL_VAL
-	str	r1, [r0, #MPLL_CON_OFFSET]
-
-	ldr	r1, =0x80200203			/* FOUT of EPLL is 96MHz */
-	str	r1, [r0, #EPLL_CON0_OFFSET]
-	ldr	r1, =0x0
-	str	r1, [r0, #EPLL_CON1_OFFSET]
-
-	ldr	r1, [r0, #CLK_SRC_OFFSET]	/* APLL, MPLL, EPLL select to Fout */
-
-#if defined(CONFIG_CLKSRC_CLKUART)
-	ldr	r2, =0x2007
-#else
-	ldr	r2, =0x7
-#endif
-	orr	r1, r1, r2
-
-	str	r1, [r0, #CLK_SRC_OFFSET]
-
-	/* wait at least 200us to stablize all clock */
-	mov	r1, #0x10000
-1:	subs	r1, r1, #1
-	bne	1b
-
-#ifdef CONFIG_SYNC_MODE				/* Synchronization for VIC port */
-	ldr	r1, [r0, #OTHERS_OFFSET]
-	orr	r1, r1, #0x20
-	str	r1, [r0, #OTHERS_OFFSET]
-#else
-	ldr	r1, [r0, #OTHERS_OFFSET]
-	bic	r1, r1, #0x20
-	str	r1, [r0, #OTHERS_OFFSET]
-#endif
-	mov	pc, lr
-#else
 	mov	r1, #0xff00
 	orr	r1, r1, #0xff
 	str	r1, [r0, #APLL_LOCK_OFFSET]
@@ -289,11 +208,16 @@ wait_for_async:
 	ldr	r1, =MPLL_VAL
 	str	r1, [r0, #MPLL_CON_OFFSET]
 
-	/* FOUT of EPLL is 48MHz */
-	ldr	r1, =0x80200103
+	/* FOUT of EPLL is 96MHz */
+/*
+	ldr	r1, =0x200203
 	str	r1, [r0, #EPLL_CON0_OFFSET]
+*/
 	ldr	r1, =0x0
 	str	r1, [r0, #EPLL_CON1_OFFSET]
+
+	ldr	r1, =0x80200103			/* FOUT of EPLL is 48MHz , enable it for MMC*/
+	str	r1, [r0, #EPLL_CON0_OFFSET]
 
 	/* APLL, MPLL, EPLL select to Fout */
 	ldr	r1, [r0, #CLK_SRC_OFFSET]
@@ -310,7 +234,7 @@ wait_for_async:
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	orr	r1, r1, #0x20
 	str	r1, [r0, #OTHERS_OFFSET]
-#elif !defined(CONFIG_S3C6400)
+#elif !defined(CONFIG_S3C6400) && !defined(CONFIG_S3C6410) 
 	/* According to 661558um_S3C6400X_rev10.pdf 0x20 is reserved */
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	bic	r1, r1, #0x20
@@ -318,61 +242,20 @@ wait_for_async:
 #endif
 	mov	pc, lr
 
-#endif
 
-
+#ifndef CONFIG_NAND_SPL
 /*
- * uart_asm_init: Initialize UART in asm mode, 115200bps fixed.
- * void uart_asm_init(void)
+ * uart_asm_init: Initialize UART's pins
  */
 uart_asm_init:
 	/* set GPIO to enable UART */
-	@ GPIO setting for UART
 	ldr	r0, =ELFIN_GPIO_BASE
 	ldr	r1, =0x220022
-	str   	r1, [r0, #GPACON_OFFSET]
-
-	ldr	r1, =0x2222
-	str   	r1, [r0, #GPBCON_OFFSET]
-
-	ldr	r0, =ELFIN_UART_CONSOLE_BASE		@0x7F005000
-	mov	r1, #0x0
-	str	r1, [r0, #UFCON_OFFSET]
-	str	r1, [r0, #UMCON_OFFSET]
-
-	mov	r1, #0x3                	@was 0.
-	str	r1, [r0, #ULCON_OFFSET]
-
-#if defined(CONFIG_CLKSRC_CLKUART)
-	ldr	r1, =0xe45			/* UARTCLK SRC = 11 => EXT_UCLK1*/
-#else
-	ldr	r1, =0x245			/* UARTCLK SRC = x0 => PCLK */
-#endif
-
-	str	r1, [r0, #UCON_OFFSET]
-
-#if defined(CONFIG_UART_50)
-	ldr	r1, =0x1A
-#elif defined(CONFIG_UART_66)
-	ldr	r1, =0x22
-#else
-	ldr	r1, =0x1A
-#endif
-	str	r1, [r0, #UBRDIV_OFFSET]
-
-#if defined(CONFIG_UART_50)
-	ldr	r1, =0x3
-#elif defined(CONFIG_UART_66)
-	ldr	r1, =0x1FFF
-#else
-	ldr	r1, =0x3
-#endif
-	str	r1, [r0, #UDIVSLOT_OFFSET]
-
+	str	r1, [r0, #GPACON_OFFSET]
 	mov	pc, lr
+#endif
 
-
-//#ifdef CONFIG_BOOT_NAND
+#ifdef CONFIG_BOOT_NAND
 /*
  * NAND Interface init for SMDK6400
  */
@@ -388,11 +271,11 @@ nand_asm_init:
 	str	r1, [r0, #NFCONT_OFFSET]
 
 	mov	pc, lr
-//#endif
+#endif
 
 #ifdef CONFIG_ENABLE_MMU
 /*
- * MMU Table for SMDK6400
+ * MMU Table for MINI6410
  */
 
 	/* form a first-level section entry */

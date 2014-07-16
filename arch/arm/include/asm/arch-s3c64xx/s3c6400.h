@@ -383,6 +383,7 @@
 
 #define S3C64XX_MEM_SYS_CFG_ONENAND	S3C64XX_MEM_SYS_CFG_16BIT
 
+#if 0
 #define GPACON		(ELFIN_GPIO_BASE + GPACON_OFFSET)
 #define GPADAT		(ELFIN_GPIO_BASE + GPADAT_OFFSET)
 #define GPAPUD		(ELFIN_GPIO_BASE + GPAPUD_OFFSET)
@@ -463,6 +464,7 @@
 #define GPQPUD		(ELFIN_GPIO_BASE + GPQPUD_OFFSET)
 #define GPQCONSLP	(ELFIN_GPIO_BASE + GPQCONSLP_OFFSET)
 #define GPQPUDSLP	(ELFIN_GPIO_BASE + GPQPUDSLP_OFFSET)
+#endif
 
 /*
  * Memory controller
@@ -893,6 +895,12 @@ enum s3c64xx_uarts_nr {
 };
 
 #include "s3c64x0.h"
+
+static inline s3c64xx_gpio *s3c64xx_get_base_gpio(void)
+{
+	return (s3c64xx_gpio *)(ELFIN_GPIO_BASE);
+}
+
 
 static inline s3c64xx_uart *s3c64xx_get_base_uart(enum s3c64xx_uarts_nr nr)
 {
