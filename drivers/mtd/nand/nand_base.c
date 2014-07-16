@@ -2651,7 +2651,6 @@ static struct nand_flash_dev *nand_get_flash_type(struct mtd_info *mtd,
 			break;
 		}
 	}
-
 	if (!type) {
 		/* supress warning if there is no nand */
 		if (*maf_id != 0x00 && *maf_id != 0xff &&

@@ -287,8 +287,7 @@ void start_armboot (void)
 	gd->flags |= GD_FLG_RELOC;
 
 	monitor_flash_len = _bss_start - _armboot_start;
-   // volatile  u32 *dat = (volatile u32 *)(0x7F005000 + 0x20);
-   // u32 temp = 0x41414141;
+    u32 temp = 0x41414141;
 	for (init_fnc_ptr = init_sequence; *init_fnc_ptr; ++init_fnc_ptr) {
 		if ((*init_fnc_ptr)() != 0) {
         	hang ();

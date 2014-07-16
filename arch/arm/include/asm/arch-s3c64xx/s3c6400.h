@@ -658,6 +658,12 @@
  */
 #define ELFIN_UART_BASE		0x7F005000
 
+/*
+* MMC
+*/
+#define ELFIN_MMC_BASE		0x7C200000
+
+
 #define ELFIN_UART0_OFFSET	0x0000
 #define ELFIN_UART1_OFFSET	0x0400
 #define ELFIN_UART2_OFFSET	0x0800
@@ -892,6 +898,12 @@ static inline s3c64xx_uart *s3c64xx_get_base_uart(enum s3c64xx_uarts_nr nr)
 {
 	return (s3c64xx_uart *)(ELFIN_UART_BASE + (nr * 0x400));
 }
+
+static inline void *samsung_get_base_mmc(void)
+{
+	return (void *)(ELFIN_MMC_BASE);
+}
+
 #endif
 
 #endif /*__S3C6400_H__*/

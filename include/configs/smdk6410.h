@@ -176,9 +176,9 @@
 #include <config_cmd_default.h>
 
 
-#ifndef CONFIG_BOOT_MOVINAND
+//#ifdef CONFIG_BOOT_MOVINAND
 #define CONFIG_UBI_FIFESYSTEM
-#endif
+//#endif
 
 #ifdef CONFIG_UBI_FIFESYSTEM
 /*ubi*/
@@ -197,6 +197,14 @@
 		    				"40m(data)," \
                             "-(reserved)"
 #endif
+
+
+/* MMC */
+#define CONFIG_GENERIC_MMC		1
+#define CONFIG_MMC			1
+#define CONFIG_S3C64X0_MMC			1
+#define CONFIG_CMD_MMC		/* MMC support			*/
+#define CONFIG_SYS_MMC_ENV_DEV		0
 
 /*usbd*/
 #define CONFIG_S3C_USBD
@@ -389,7 +397,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 
 #ifdef  CONFIG_BOOT_MOVINAND
-#define UART_CLK_CFG
+//#define UART_CLK_CFG
 #endif
 
 #define CONFIG_NAND
@@ -401,6 +409,7 @@ extern unsigned int FriendlyARMGetNandSizeInMB(void);
 
 /* Settings as above boot configuration */
 #define CONFIG_ENV_IS_IN_NAND
+//#define CONFIG_ENV_IS_IN_MMC
 #define CONFIG_BOOTARGS	"ubi.mtd=2,2048 root=ubi0:rootfs-nand rootfstype=ubifs ro console=ttySAC0,115200"
 /*≈‰÷√mtdµ˜ ‘*/
 //#define CONFIG_MTD_DEBUG

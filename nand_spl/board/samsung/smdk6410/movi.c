@@ -3,7 +3,7 @@
 #ifdef CONFIG_BOOT_MOVINAND
 
 #if defined(CONFIG_SMDK6410)
-#include <s3c6410.h>
+#include <s3c6400.h>
 #elif defined(CONFIG_SMDK6430)
 #include <s3c6430.h>
 #endif

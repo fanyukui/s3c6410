@@ -1249,7 +1249,7 @@ typedef enum {
 #define S3C_OTG_DPTXFSIZ13	(USBOTG_LINK_BASE + 0x134)	/* Device Periodic Transmit FIFO-13 Size */
 #define S3C_OTG_DPTXFSIZ14	(USBOTG_LINK_BASE + 0x138)	/* Device Periodic Transmit FIFO-14 Size */
 #define S3C_OTG_DPTXFSIZ15	(USBOTG_LINK_BASE + 0x13C)	/* Device Periodic Transmit FIFO-15 Size */
-	
+
 /* Host Global Registers */
 #define S3C_OTG_HCFG		(USBOTG_LINK_BASE + 0x400)	/* Host Configuration */
 #define S3C_OTG_HFIR		(USBOTG_LINK_BASE + 0x404)	/* Host Frame Interval */
@@ -1269,7 +1269,7 @@ typedef enum {
 #define S3C_OTG_HCTSIZ0		(USBOTG_LINK_BASE + 0x510)	/* Host Channel-0 Transfer Size */
 #define S3C_OTG_HCDMA0		(USBOTG_LINK_BASE + 0x514)	/* Host Channel-0 DMA Address */
 
-	
+
 /* Device Global Registers */
 #define S3C_OTG_DCFG		(USBOTG_LINK_BASE + 0x800)	/* Device Configuration */
 #define S3C_OTG_DCTL		(USBOTG_LINK_BASE + 0x804)	/* Device Control */
@@ -1284,7 +1284,7 @@ typedef enum {
 #define S3C_OTG_DVBUSPULSE	(USBOTG_LINK_BASE + 0x82C)	/* Device VBUS Pulsing Time */
 #define S3C_OTG_DTKNQR3 	(USBOTG_LINK_BASE + 0x830)	/* Device IN Token Sequence Learning Queue Read 3 */
 #define S3C_OTG_DTKNQR4 	(USBOTG_LINK_BASE + 0x834)	/* Device IN Token Sequence Learning Queue Read 4 */
-	
+
 /* Device Logical IN Endpoint-Specific Registers */
 #define S3C_OTG_DIEPCTL0	(USBOTG_LINK_BASE + 0x900)	/* Device IN Endpoint 0 Control */
 #define S3C_OTG_DIEPINT0	(USBOTG_LINK_BASE + 0x908)	/* Device IN Endpoint 0 Interrupt */
@@ -1296,19 +1296,20 @@ typedef enum {
 #define S3C_OTG_DOEPINT0	(USBOTG_LINK_BASE + 0xB08)	/* Device OUT Endpoint 0 Interrupt */
 #define S3C_OTG_DOEPTSIZ0	(USBOTG_LINK_BASE + 0xB10)	/* Device OUT Endpoint 0 Transfer Size */
 #define S3C_OTG_DOEPDMA0	(USBOTG_LINK_BASE + 0xB14)	/* Device OUT Endpoint 0 DMA Address */
-	
+
 /* Power & clock gating registers */
 #define S3C_OTG_PCGCCTRL	(USBOTG_LINK_BASE + 0xE00)
 
 /* Endpoint FIFO address */
 #define S3C_OTG_EP0_FIFO	(USBOTG_LINK_BASE + 0x1000)
 
- 
+
 
 /* OTG PHY CORE REGISTERS */
 #define S3C_OTG_PHYPWR		(USBOTG_PHY_BASE+0x00)
 #define S3C_OTG_PHYCTRL		(USBOTG_PHY_BASE+0x04)
 #define S3C_OTG_RSTCON		(USBOTG_PHY_BASE+0x08)
+
 
 #if 0
 /* include common stuff */

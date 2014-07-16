@@ -77,7 +77,7 @@ $(obj)cpu_init.S:
 # from board directory
 $(obj)lowlevel_init.S:
 	@rm -f $@
-	@ln -s $(TOPDIR)/board/samsung/smdk6400/lowlevel_init.S $@
+	@ln -s $(TOPDIR)/board/samsung/smdk6410/lowlevel_init.S $@
 
 # from nand_spl directory
 $(obj)nand_boot.c:

@@ -106,9 +106,7 @@ int env_init(void)
 	tmp_env2 = (env_t *)((ulong)env_ptr + CONFIG_ENV_SIZE);
 	crc2_ok = (crc32(0, tmp_env2->data, ENV_SIZE) == tmp_env2->crc);
 #endif
-
 	tmp_env1 = env_ptr;
-
 	crc1_ok = (crc32(0, tmp_env1->data, ENV_SIZE) == tmp_env1->crc);
 
 	if (!crc1_ok && !crc2_ok) {

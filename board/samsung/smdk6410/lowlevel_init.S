@@ -97,29 +97,24 @@ lowlevel_init:
 	/* for UART */
 	bl uart_asm_init
 
+/*
 	ldr	r0, =ELFIN_UART_BASE
 	ldr	r1, =0x4f4f4f4f
 	str	r1, [r0, #UTXH_OFFSET]
+	*/
 
-#ifdef CONFIG_BOOT_NAND
+//#ifdef CONFIG_BOOT_NAND
 	/* simple init for NAND */
 	bl nand_asm_init
-#endif
+//#endif
 
 	/* Memory subsystem address 0x7e00f120 */
 	ldr	r0, =ELFIN_MEM_SYS_CFG
 
-#ifdef CONFIG_BOOT_MOVINAND
-    /* Xm0CSn4 = NFCON CS0, Xm0CSn5 = NFCON CS1 */
-	mov	r1, #S3C64XX_MEM_SYS_CFG_MOVI
-	str	r1, [r0]
-#endif
-
-#ifdef CONFIG_BOOT_NAND
 	/* Xm0CSn2 = NFCON CS0, Xm0CSn3 = NFCON CS1 */
 	mov	r1, #S3C64XX_MEM_SYS_CFG_NAND
 	str	r1, [r0]
-#endif
+
 
 	bl	mem_ctrl_asm_init
 
@@ -294,8 +289,8 @@ wait_for_async:
 	ldr	r1, =MPLL_VAL
 	str	r1, [r0, #MPLL_CON_OFFSET]
 
-	/* FOUT of EPLL is 96MHz */
-	ldr	r1, =0x200203
+	/* FOUT of EPLL is 48MHz */
+	ldr	r1, =0x80200103
 	str	r1, [r0, #EPLL_CON0_OFFSET]
 	ldr	r1, =0x0
 	str	r1, [r0, #EPLL_CON1_OFFSET]
@@ -377,7 +372,7 @@ uart_asm_init:
 	mov	pc, lr
 
 
-#ifdef CONFIG_BOOT_NAND
+//#ifdef CONFIG_BOOT_NAND
 /*
  * NAND Interface init for SMDK6400
  */
@@ -393,7 +388,7 @@ nand_asm_init:
 	str	r1, [r0, #NFCONT_OFFSET]
 
 	mov	pc, lr
-#endif
+//#endif
 
 #ifdef CONFIG_ENABLE_MMU
 /*
