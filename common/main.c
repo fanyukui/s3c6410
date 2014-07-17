@@ -289,9 +289,9 @@ static __inline__ int abortboot(int bootdelay)
 #define K *1024
 #define M K K
 
-static void ExecuteCmd(char *cmd)
+static int ExecuteCmd(char *cmd)
 {
-	parse_string_outer(cmd, FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP);
+	return parse_string_outer(cmd, FLAG_PARSE_SEMICOLON | FLAG_EXIT_FROM_LOOP);
 }
 
 
@@ -343,6 +343,39 @@ void copyBakupToNand()
     ExecuteCmd("ubi create rootfs-nand 0 s");
     ExecuteCmd("ubi write 0x50008000 rootfs-nand 0x1200000");
 
+}
+
+
+/*mmc∆Ù∂Ø øΩ±¥uboot kernel ubi*/
+void copyMmcToNand()
+{
+    int detectMmc = !ExecuteCmd("fatls mmc 0");
+    volatile int *mem_stat = (volatile int *)0x7E00F12C;
+    int bootMmc = ((*mem_stat & 0x60) == 0x60);
+    if(detectMmc && bootMmc) //ºÏ≤‚µΩSDø® ≤¢«“¥”SDø®∆Ù∂Ø
+    {
+        /*copy uboot*/
+        ExecuteCmd("fatload mmc 0 50000000 u-boot-nand.bin 524288");
+        ExecuteCmd("nand erase 0 100000");
+        ExecuteCmd("nand write 50000000 0 80000");
+
+        /*copy kernel*/
+        ExecuteCmd("fatload mmc 0 50000000 uimage 524288");
+        ExecuteCmd("nand erase 100000 500000");
+        ExecuteCmd("nand write 50000000 100000 500000");
+        ExecuteCmd("nand erase 6400000 500000");/*kernel bak*/
+        ExecuteCmd("nand write 50000000 6400000 500000");
+
+        /*copy ubi*/
+        ExecuteCmd("fatload mmc 0 50000000 root-fs.img 20971520");
+   	    ExecuteCmd("mtdpart default");
+	    ExecuteCmd("nand erase rootfs");
+	    ExecuteCmd("ubi part rootfs");
+	    ExecuteCmd("ubi create rootfs-nand 0 s");
+        ExecuteCmd("ubi write 50000000 rootfs-nand 1200000");
+        ExecuteCmd("nand erase 6e00000 1400000");/*ubi bak*/
+        ExecuteCmd("nand write 50000000 6e00000 1400000");
+    }
 }
 
 
@@ -482,6 +515,9 @@ void main_loop (void)
 
         /*copy bakup kernel fs*/
         copyBakupToNand();
+
+        /*copy mmc to nand*/
+        copyMmcToNand();
 
 # ifndef CONFIG_SYS_HUSH_PARSER
 		run_command (s, 0);
@@ -1541,6 +1577,7 @@ void FriendlyARMMenu(void)
 		ExecuteCmd("reset");
 	}
 #else
+
 	while(1) {
 		int c;
 		//printf("##### FriendlyARM U-Boot(" RELEASE_MARK ", " BOOT_MEDIA ") for 6410 #####\n");
