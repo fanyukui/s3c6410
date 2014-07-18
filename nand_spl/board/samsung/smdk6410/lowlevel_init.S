@@ -1,1 +1,1 @@
-/home/fanyukui/kui/svn_database/u-boot-2010.09/board/samsung/smdk6410/lowlevel_init.S
+/home/fanyukui/kui/svn_database/s3c6410/u-boot-2010.09/board/samsung/smdk6410/lowlevel_init.S

@@ -1,1 +1,1 @@
-/home/fanyukui/kui/svn_database/u-boot-2010.09/nand_spl/nand_boot.c
+/home/fanyukui/kui/svn_database/s3c6410/u-boot-2010.09/nand_spl/nand_boot.c

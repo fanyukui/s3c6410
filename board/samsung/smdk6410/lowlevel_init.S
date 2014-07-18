@@ -208,7 +208,7 @@ wait_for_async:
 	ldr	r1, =MPLL_VAL
 	str	r1, [r0, #MPLL_CON_OFFSET]
 
-	/* FOUT of EPLL is 96MHz */
+	/* FOUT of EPLL is 24MHz */
 /*
 	ldr	r1, =0x200203
 	str	r1, [r0, #EPLL_CON0_OFFSET]
@@ -221,7 +221,7 @@ wait_for_async:
 
 	/* APLL, MPLL, EPLL select to Fout */
 	ldr	r1, [r0, #CLK_SRC_OFFSET]
-	orr	r1, r1, #0x7
+	orr	r1, r1, #0x27
 	str	r1, [r0, #CLK_SRC_OFFSET]
 
 	/* wait at least 200us to stablize all clock */
@@ -234,7 +234,7 @@ wait_for_async:
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	orr	r1, r1, #0x20
 	str	r1, [r0, #OTHERS_OFFSET]
-#elif !defined(CONFIG_S3C6400) && !defined(CONFIG_S3C6410) 
+#elif !defined(CONFIG_S3C6400) && !defined(CONFIG_S3C6410)
 	/* According to 661558um_S3C6400X_rev10.pdf 0x20 is reserved */
 	ldr	r1, [r0, #OTHERS_OFFSET]
 	bic	r1, r1, #0x20
